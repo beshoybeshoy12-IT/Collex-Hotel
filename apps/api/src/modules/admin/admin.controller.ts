@@ -105,7 +105,52 @@ export class AdminController {
       this.prisma.auditEvent.count({ where }),
     ]);
     const actors = await this.prisma.user.findMany({ where: { id: { in: items.map((i) => i.actorId).filter(Boolean) as string[] } }, select: { id: true, fullName: true } });
-    return { items: items.map((i) => ({ ...i, actorName: actors.find((a) => a.id === i.actorId)?.fullName ?? null })), total, page: q.page, pageSize: q.pageSize };
+    const refs = await this.resolveRefs(ctx.propertyId, items);
+    return {
+      items: items.map((i) => ({ ...i, actorName: actors.find((a) => a.id === i.actorId)?.fullName ?? null, entityLabel: i.entityId ? refs[i.entityId] ?? null : null })),
+      refs,
+      total,
+      page: q.page,
+      pageSize: q.pageSize,
+    };
+  }
+
+  /**
+   * Maps internal IDs found in audit entries to human-readable labels (room number, guest name,
+   * confirmation number) so staff never need to read raw identifiers. Lookups are scoped to the property.
+   */
+  private async resolveRefs(propertyId: string, items: { entityType: string; entityId: string | null; details: unknown }[]) {
+    const ids = new Set<string>();
+    const collect = (v: unknown) => {
+      if (typeof v === 'string' && /^c[a-z0-9]{20,}$/.test(v)) ids.add(v);
+      else if (Array.isArray(v)) v.forEach(collect);
+      else if (v && typeof v === 'object') Object.values(v).forEach(collect);
+    };
+    items.forEach((i) => {
+      if (i.entityId) ids.add(i.entityId);
+      collect(i.details);
+    });
+    const list = [...ids];
+    if (!list.length) return {} as Record<string, string>;
+    const where = { id: { in: list }, propertyId };
+    const [rooms, guests, reservations, stays, lines, assignments, docs] = await Promise.all([
+      this.prisma.room.findMany({ where, select: { id: true, number: true } }),
+      this.prisma.guest.findMany({ where, select: { id: true, firstName: true, lastName: true } }),
+      this.prisma.reservation.findMany({ where, select: { id: true, confirmationNo: true } }),
+      this.prisma.stay.findMany({ where, select: { id: true, reservation: { select: { confirmationNo: true } } } }),
+      this.prisma.reservationRoom.findMany({ where, select: { id: true, reservation: { select: { confirmationNo: true } } } }),
+      this.prisma.roomAssignment.findMany({ where, select: { id: true, room: { select: { number: true } } } }),
+      this.prisma.identityDocument.findMany({ where, select: { id: true, guest: { select: { firstName: true, lastName: true } } } }),
+    ]);
+    const refs: Record<string, string> = {};
+    rooms.forEach((r) => (refs[r.id] = `#${r.number}`));
+    guests.forEach((g) => (refs[g.id] = `${g.firstName} ${g.lastName}`));
+    reservations.forEach((r) => (refs[r.id] = r.confirmationNo));
+    stays.forEach((s) => (refs[s.id] = s.reservation.confirmationNo));
+    lines.forEach((l) => (refs[l.id] = l.reservation.confirmationNo));
+    assignments.forEach((a) => (refs[a.id] = `#${a.room.number}`));
+    docs.forEach((d) => (refs[d.id] = `${d.guest.firstName} ${d.guest.lastName}`));
+    return refs;
   }
 
   @Get('notifications')

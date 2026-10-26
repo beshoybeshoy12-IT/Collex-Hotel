@@ -139,7 +139,15 @@ export default function PortalPage() {
                   <Alert tone="success">{t('portal.documentsComplete')}</Alert>
                 ) : (
                   <div className="space-y-6">
-                    {r.documentRequirements.guests.map((g: any) => (
+                    {r.documentRequirements.guests.map((g: any, i: number) => g.unregistered ? (
+                      <div key={`unregistered-${i}`} className="rounded-lg border border-slate-200 p-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <h3 className="font-semibold">{t('documents.unregisteredAdult')}</h3>
+                          <StatusBadge group="requirement" value={g.state} />
+                        </div>
+                        <p className="mt-2 text-sm text-slate-600">{t('portal.registerAtDesk')}</p>
+                      </div>
+                    ) : (
                       <div key={g.guestId} className="rounded-lg border border-slate-200 p-3">
                         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                           <h3 className="font-semibold">{t('portal.uploadFor', { name: g.name })}</h3>

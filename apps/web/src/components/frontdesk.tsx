@@ -128,9 +128,9 @@ export function CheckInDialog({ reservationId, reservationRoomId, guestName, ope
               <Badge tone="neutral">{t('status.document.NOT_REQUIRED')}</Badge>
             ) : (
               <ul className="space-y-1">
-                {req.guests.map((g: any) => (
-                  <li key={g.guestId} className="flex items-center justify-between gap-2 rounded border border-slate-100 px-3 py-2 text-sm">
-                    <span>{g.name}</span>
+                {req.guests.map((g: any, i: number) => (
+                  <li key={g.guestId ?? `unregistered-${i}`} className="flex items-center justify-between gap-2 rounded border border-slate-100 px-3 py-2 text-sm">
+                    <span>{g.unregistered ? t('documents.unregisteredAdult') : g.name}</span>
                     <StatusBadge group="requirement" value={g.state} />
                   </li>
                 ))}

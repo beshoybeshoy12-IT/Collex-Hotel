@@ -309,7 +309,8 @@ export class DocumentsService {
       (await tx.checkInPolicy.findUnique({ where: { propertyId } })) ??
       ({ documentScope: 'ALL_ADULTS', acceptedTypes: ['PASSPORT', 'NATIONAL_ID', 'RESIDENCE_PERMIT'], requireVerification: true, homeCountry: null } as any);
     const occupants = await tx.reservationOccupant.findMany({
-      where: { reservationId, ...(reservationRoomId ? { OR: [{ reservationRoomId }, { reservationRoomId: null, isPrimary: true }] } : {}) },
+      // Occupants not linked to a specific room line count for every room of the reservation.
+      where: { reservationId, ...(reservationRoomId ? { OR: [{ reservationRoomId }, { reservationRoomId: null }] } : {}) },
       include: { guest: true },
     });
     const date = today(property);
@@ -342,7 +343,16 @@ export class DocumentsService {
       else if (docs.some((x) => x.status === 'REUPLOAD_REQUESTED')) state = 'REUPLOAD_REQUESTED';
       else if (docs.some((x) => x.status === 'EXPIRED' || !valid(x))) state = 'EXPIRED';
       else if (docs.some((x) => x.status === 'REJECTED')) state = 'REJECTED';
-      guests.push({ guestId: o.guestId, name: `${o.guest.firstName} ${o.guest.lastName}`, isPrimary: o.isPrimary, nationality: o.guest.nationality, state });
+      guests.push({ guestId: o.guestId as string | null, name: `${o.guest.firstName} ${o.guest.lastName}`, isPrimary: o.isPrimary, nationality: o.guest.nationality, state, unregistered: false });
+    }
+    // Every adult on the booking must be registered: adults booked but not yet registered count as missing.
+    if (policy.documentScope === 'ALL_ADULTS') {
+      const lines = await tx.reservationRoom.findMany({ where: { reservationId, active: true, ...(reservationRoomId ? { id: reservationRoomId } : {}) }, select: { adults: true } });
+      const bookedAdults = lines.reduce((a, l) => a + l.adults, 0);
+      const registeredAdults = occupants.filter((o) => o.isAdult).length;
+      for (let i = registeredAdults; i < bookedAdults; i++) {
+        guests.push({ guestId: null, name: '', isPrimary: false, nationality: null, state: 'MISSING', unregistered: true });
+      }
     }
     return {
       policy: { documentScope: policy.documentScope, acceptedTypes: policy.acceptedTypes, requireVerification: policy.requireVerification, allowExceptions: policy.allowExceptions ?? false },

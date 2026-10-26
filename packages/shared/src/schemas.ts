@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { isIsoDate } from './dates';
+import { isCountryCode, isValidDocumentNumber } from './countries';
 import {
   DocumentScope,
   DocumentTypeCode,
@@ -18,6 +19,8 @@ import {
 } from './enums';
 
 export const isoDate = z.string().refine(isIsoDate, { message: 'invalid_date' });
+/** ISO 3166-1 alpha-2 country code (nationality, issuing country). */
+const country = z.string().trim().toUpperCase().refine(isCountryCode, { message: 'invalid_country' });
 const money = z.string().regex(/^-?\d{1,10}(\.\d{1,3})?$/, 'invalid_amount');
 const positiveMoney = money.refine((v) => Number(v) > 0, 'amount_must_be_positive');
 const id = z.string().min(1).max(64);
@@ -177,7 +180,7 @@ export const guestSchema = z.object({
   lastName: shortText.min(1),
   email: z.string().trim().toLowerCase().email().max(254).nullable().optional(),
   phone: z.string().trim().max(40).nullable().optional(),
-  nationality: z.string().length(2).toUpperCase().nullable().optional(),
+  nationality: country.nullable().optional(),
   dateOfBirth: isoDate.nullable().optional(),
   preferredLocale: z.enum(Locale).default('ar'),
   address: shortText.nullable().optional(),
@@ -249,15 +252,22 @@ export const guestLookupSchema = z.object({
   lastName: shortText.min(1),
 });
 
-export const documentMetadataSchema = z.object({
+const documentMetadataBase = z.object({
   guestId: id,
   reservationId: id.nullable().optional(),
   typeCode: z.enum(DocumentTypeCode),
-  issuingCountry: z.string().length(2).toUpperCase().nullable().optional(),
+  issuingCountry: country.nullable().optional(),
   documentNumber: z.string().trim().max(40).nullable().optional(),
   holderName: shortText.nullable().optional(),
   issueDate: isoDate.nullable().optional(),
   expiryDate: isoDate.nullable().optional(),
+});
+
+/** Document number format follows the document type (ICAO Doc 9303 for passports). */
+export const documentMetadataSchema = documentMetadataBase.superRefine((v, ctx) => {
+  if (v.documentNumber && !isValidDocumentNumber(v.typeCode, v.documentNumber)) {
+    ctx.addIssue({ code: 'custom', message: 'invalid_document_number', path: ['documentNumber'] });
+  }
 });
 
 export const documentReviewSchema = z.discriminatedUnion('decision', [
@@ -266,7 +276,7 @@ export const documentReviewSchema = z.discriminatedUnion('decision', [
   z.object({ decision: z.literal('REQUEST_REUPLOAD'), reason: shortText.min(3) }),
 ]);
 
-export const documentCorrectionSchema = documentMetadataSchema
+export const documentCorrectionSchema = documentMetadataBase
   .pick({ issuingCountry: true, documentNumber: true, holderName: true, issueDate: true, expiryDate: true })
   .extend({ reason: shortText.min(3) });
 
@@ -275,7 +285,7 @@ export const checkInPolicySchema = z.object({
   acceptedTypes: z.array(z.enum(DocumentTypeCode)).min(1),
   requireVerification: z.boolean(),
   allowExceptions: z.boolean(),
-  homeCountry: z.string().length(2).toUpperCase().nullable(),
+  homeCountry: country.nullable(),
   requireDepositBeforeCheckIn: z.boolean(),
   requireInspectedRoom: z.boolean(),
   documentRetentionDays: z.number().int().min(1).max(3650),
@@ -323,6 +333,15 @@ export const walkInSchema = z.object({
   guest: guestSchema,
   additionalGuests: z.array(guestSchema.extend({ isAdult: z.boolean().default(true) })).max(20).default([]),
   specialRequests: longText.default(''),
+  /** Physical room chosen by the receptionist; re-validated by the server. Omit to auto-assign the best ready room. */
+  roomId: id.optional(),
+});
+
+export const walkInRoomsSchema = z.object({
+  categoryId: id,
+  departure: isoDate,
+  adults: z.coerce.number().int().min(1).max(20).default(1),
+  children: z.coerce.number().int().min(0).max(20).default(0),
 });
 
 export const housekeepingTaskSchema = z.object({

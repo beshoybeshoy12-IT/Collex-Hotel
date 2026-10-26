@@ -8,6 +8,7 @@ import { Alert, Badge, Button, Card, Checkbox, ConfirmButton, Dialog, Field, Inp
 import { useFormat, useLocalName } from '@/lib/format';
 import { useApi, useApiMutation } from '@/lib/hooks';
 import { useRequiredSession } from '@/lib/session';
+import { CountrySelect } from '@/components/country-select';
 
 type Tab = 'property' | 'policy' | 'categories' | 'rooms' | 'rates' | 'users' | 'notifications' | 'security';
 
@@ -77,7 +78,7 @@ function PolicyTab() {
             {DocumentScope.map((x) => <option key={x} value={x}>{t(`enum.documentScope.${x}`)}</option>)}
           </Select>
         </Field>
-        <Field label={t('settings.homeCountry')} htmlFor="po-h"><LtrInput id="po-h" maxLength={2} value={v.homeCountry ?? ''} onChange={(e) => setV({ ...v, homeCountry: e.target.value.toUpperCase() })} /></Field>
+        <Field label={t('settings.homeCountry')} htmlFor="po-h"><CountrySelect id="po-h" value={v.homeCountry ?? ''} onChange={(c) => setV({ ...v, homeCountry: c })} /></Field>
         <fieldset className="space-y-1">
           <legend className="text-sm font-medium text-slate-700">{t('settings.acceptedTypes')}</legend>
           {['PASSPORT', 'NATIONAL_ID', 'RESIDENCE_PERMIT', 'DRIVING_LICENSE', 'OTHER'].map((x) => (

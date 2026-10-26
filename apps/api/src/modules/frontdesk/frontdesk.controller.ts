@@ -9,10 +9,11 @@ import {
   extendStaySchema,
   Permissions as P,
   roomMoveSchema,
+  walkInRoomsSchema,
   walkInSchema,
 } from '@collex/shared';
 import { Ctx, Perm, type RequestContext } from '../../common/context';
-import { ZBody } from '../../common/zod';
+import { ZBody, ZQuery } from '../../common/zod';
 import { AssignmentsService } from './assignments.service';
 import { FrontDeskService } from './frontdesk.service';
 
@@ -68,6 +69,12 @@ export class FrontDeskController {
   @Perm(P.CHECKOUT)
   checkOut(@Ctx() ctx: RequestContext, @ZBody(checkOutSchema) body: z.infer<typeof checkOutSchema>) {
     return this.svc.checkOut(ctx, body);
+  }
+
+  @Get('walk-in/rooms')
+  @Perm(P.ASSIGN_ROOMS)
+  walkInRooms(@Ctx() ctx: RequestContext, @ZQuery(walkInRoomsSchema) q: z.infer<typeof walkInRoomsSchema>) {
+    return this.assignments.walkInRooms(ctx, q);
   }
 
   @Post('walk-in')

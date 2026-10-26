@@ -144,10 +144,13 @@ export class ReservationsService {
         );
       }
       await tx.reservationOccupant.create({ data: { reservationId: reservation.id, reservationRoomId: roomLines[0].id, guestId: primary.id, isPrimary: true, isAdult: true } });
+      // Guest IDs in input order (primary first) so callers can attach documents to each person.
+      const guestIds = [primary.id];
       for (const g of input.additionalGuests) {
         const { isAdult, ...guestData } = g;
         const guest = await this.guests.create(ctx, guestData as GuestInput, tx);
         await tx.reservationOccupant.create({ data: { reservationId: reservation.id, reservationRoomId: roomLines[0].id, guestId: guest.id, isPrimary: false, isAdult } });
+        guestIds.push(guest.id);
       }
       await this.finance.createFolio(tx, ctx.propertyId, reservation.id, `${primary.firstName} ${primary.lastName}`, ctx.property.currency);
       await tx.reservationHistory.create({ data: { reservationId: reservation.id, action: 'CREATED', toStatus: status, actorId: ctx.userId, details: { source: input.source, rooms: input.rooms.length, grandTotal: grand.toFixed(2) } } });
@@ -176,7 +179,7 @@ export class ReservationsService {
         },
         tx,
       );
-      return reservation;
+      return { ...reservation, guestIds };
     };
     const reservation = opts.tx ? await run(opts.tx) : await this.prisma.withInventoryLock(ctx.propertyId, run);
     return reservation;

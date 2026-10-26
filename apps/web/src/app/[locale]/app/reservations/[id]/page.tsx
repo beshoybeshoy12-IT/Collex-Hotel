@@ -99,9 +99,13 @@ export default function ReservationDetailPage({ params }: { params: Promise<{ id
               <Badge>{t('status.document.NOT_REQUIRED')}</Badge>
             ) : (
               <ul className="space-y-2 text-sm">
-                {x.documentRequirements.guests.map((g: any) => (
-                  <li key={g.guestId} className="flex items-center justify-between gap-2">
-                    <Link href={`/app/guests/${g.guestId}`} className="text-brand-700 hover:underline">{g.name}</Link>
+                {x.documentRequirements.guests.map((g: any, i: number) => (
+                  <li key={g.guestId ?? `unregistered-${i}`} className="flex items-center justify-between gap-2">
+                    {g.unregistered ? (
+                      <button type="button" className="text-start text-amber-800 hover:underline" onClick={() => setTab('occupants')}>{t('documents.unregisteredAdult')}</button>
+                    ) : (
+                      <Link href={`/app/guests/${g.guestId}`} className="text-brand-700 hover:underline">{g.name}</Link>
+                    )}
                     <StatusBadge group="requirement" value={g.state} />
                   </li>
                 ))}

@@ -8,17 +8,19 @@ _Last updated: 2026-10-27_
 |---|---|
 | `pnpm turbo run typecheck` | ✅ all packages |
 | `pnpm turbo run lint` | ✅ (ESLint: no warnings or errors in web; tsc for api/shared) |
-| `pnpm turbo run test` | ✅ **49 tests**: shared 19 (unit), api 24 (integration on real PostgreSQL `collex_test`), web 6 (i18n) |
+| `pnpm turbo run test` | ✅ **50 tests**: shared 19 (unit), api 25 (integration on real PostgreSQL `collex_test`), web 6 (i18n) |
 | `pnpm turbo run build` | ✅ API (tsc) and web (Next.js, 45 routes) |
 | Prisma migration from empty DB | ✅ includes the exclusion constraint and check constraints |
 | API boots, `/health`, `/health/ready`, `/docs` | ✅ |
 | OpenAPI export | ✅ `docs/api/openapi.json` (100 paths) |
 | Docker stack (`docker compose --profile app up -d --build`) | ✅ images build; migrate → api (healthy) → worker → web; web page, logo assets, login, dashboard, document upload to the storage volume, worker draining the outbox — checked 2026-10-27 |
+| Walk-in registration (2026-10-27) | ✅ end to end in the browser on the Docker stack: room chosen by reception, passport data per ICAO 9303 + ISO 3166-1 nationality picker, scan upload, verification, immediate check-in; audit log shows translated actions and readable details |
 | Manual browser check (built-in browser) | ✅ Arabic default + RTL; public search → book (deposit) → portal → simulated signed webhook → confirmed; staff login; dashboard; room recommendations; check-in blocked by missing documents; documented exception check-in; English LTR switch on same page; floor plan; mobile layout (375 px) |
 
 ### Integration tests cover
 
 - Auth: identical errors for unknown/known accounts, httpOnly SameSite cookie, CSRF header enforcement, logout revocation.
+- Walk-in: chosen room honoured; every booked adult must be registered (unregistered adults block check-in); invalid ISO country codes and passport numbers rejected.
 - Property isolation: foreign property header → 403; foreign record IDs → 404 (reservations, guests, documents).
 - Granular permissions (housekeeping cannot book or take payments; cashier cannot close work orders; agent cannot view documents).
 - Identity documents: content sniffing rejects spoofed HTML and PDF-with-JS; encrypted at rest; masked numbers; file view audited; unauthenticated/cross-property access blocked; reject → re-upload → verify; retention purge keeps audit record.

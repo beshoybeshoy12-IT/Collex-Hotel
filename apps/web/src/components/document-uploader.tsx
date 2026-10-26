@@ -6,6 +6,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { ApiError, getPropertyId } from '@/lib/api';
 import { useErrorMessage } from '@/lib/errors';
 import { Alert, Button, Field, Input, LtrInput, Select } from './ui';
+import { CountrySelect } from './country-select';
 
 const MAX_MB = 10;
 const ACCEPT = 'image/jpeg,image/png,image/webp,image/heic,application/pdf';
@@ -123,8 +124,8 @@ export function DocumentUploader({
             ))}
           </Select>
         </Field>
-        <Field label={t('documents.issuingCountry')} htmlFor={`${uid}-ic`} hint="SA, EG, GB…">
-          <LtrInput id={`${uid}-ic`} maxLength={2} value={meta.issuingCountry} onChange={(e) => setMeta({ ...meta, issuingCountry: e.target.value.toUpperCase() })} />
+        <Field label={t('documents.issuingCountry')} htmlFor={`${uid}-ic`}>
+          <CountrySelect id={`${uid}-ic`} value={meta.issuingCountry} onChange={(c) => setMeta({ ...meta, issuingCountry: c })} />
         </Field>
         {mode === 'staff' && (
           <>

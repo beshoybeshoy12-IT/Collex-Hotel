@@ -11,6 +11,7 @@ import { useErrorMessage } from '@/lib/errors';
 import { useFormat } from '@/lib/format';
 import { useApi, useApiMutation } from '@/lib/hooks';
 import { useRequiredSession } from '@/lib/session';
+import { CountrySelect } from '@/components/country-select';
 
 /** Secure preview: the scan is streamed through the authorised API into a short-lived in-memory object URL. */
 function SecurePreview({ documentId, fileId, mimeType }: { documentId: string; fileId: string; mimeType: string }) {
@@ -112,7 +113,7 @@ export default function DocumentReviewPage({ params }: { params: Promise<{ id: s
               <div className="mt-3 grid gap-2">
                 <Field label={t('documents.holderName')} htmlFor="ce-hn"><Input id="ce-hn" value={edit.holderName} onChange={(e) => setEdit({ ...edit, holderName: e.target.value })} /></Field>
                 <Field label={t('documents.number')} htmlFor="ce-no"><LtrInput id="ce-no" value={edit.documentNumber} onChange={(e) => setEdit({ ...edit, documentNumber: e.target.value })} /></Field>
-                <Field label={t('documents.issuingCountry')} htmlFor="ce-ic"><LtrInput id="ce-ic" maxLength={2} value={edit.issuingCountry} onChange={(e) => setEdit({ ...edit, issuingCountry: e.target.value.toUpperCase() })} /></Field>
+                <Field label={t('documents.issuingCountry')} htmlFor="ce-ic"><CountrySelect id="ce-ic" value={edit.issuingCountry} onChange={(c) => setEdit({ ...edit, issuingCountry: c })} /></Field>
                 <Field label={t('documents.issueDate')} htmlFor="ce-id"><Input id="ce-id" type="date" value={edit.issueDate} onChange={(e) => setEdit({ ...edit, issueDate: e.target.value })} /></Field>
                 <Field label={t('documents.expiryDate')} htmlFor="ce-ed"><Input id="ce-ed" type="date" value={edit.expiryDate} onChange={(e) => setEdit({ ...edit, expiryDate: e.target.value })} /></Field>
                 <Field label={t('documents.correctionReason')} htmlFor="ce-r" required><Input id="ce-r" value={edit.reason} onChange={(e) => setEdit({ ...edit, reason: e.target.value })} /></Field>

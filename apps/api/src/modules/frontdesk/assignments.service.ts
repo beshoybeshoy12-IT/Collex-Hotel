@@ -170,6 +170,30 @@ export class AssignmentsService {
     return results;
   }
 
+  /** Ranked rooms ready for an immediate walk-in check-in (before the reservation exists). */
+  async walkInRooms(ctx: RequestContext, q: { categoryId: string; departure: string; adults: number; children: number }) {
+    const start = today(ctx.property);
+    if (q.departure <= start) throw new AppError('DEPARTURE_AFTER_ARRIVAL');
+    const category = await this.prisma.roomCategory.findFirst({ where: { id: q.categoryId, propertyId: ctx.propertyId } });
+    if (!category) throw notFound('CATEGORY');
+    const policy = await this.prisma.checkInPolicy.findUnique({ where: { propertyId: ctx.propertyId } });
+    const rooms = await this.candidates(ctx, start, q.departure);
+    const ranked = rankRooms(rooms, {
+      reservationRoomId: '',
+      categoryId: category.id,
+      categoryRank: category.rank,
+      start,
+      end: q.departure,
+      occupants: q.adults + q.children,
+      immediateCheckIn: true,
+      requireInspection: policy?.requireInspectedRoom ?? false,
+      allowUpgrade: false,
+      preferences: {},
+    }).filter((r) => rooms.find((x) => x.id === r.roomId)?.categoryId === category.id);
+    const info = await this.prisma.room.findMany({ where: { id: { in: ranked.map((r) => r.roomId) } }, select: { id: true, number: true, housekeepingStatus: true, floor: { select: { name: true, nameAr: true } } } });
+    return ranked.map((r) => ({ ...r, room: info.find((x) => x.id === r.roomId) }));
+  }
+
   /** Confirmed reservations arriving within the window that still have unassigned room lines. */
   async unassignedQueue(ctx: RequestContext, days = 3) {
     const from = today(ctx.property);

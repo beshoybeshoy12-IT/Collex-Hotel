@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { CountrySelect } from '@/components/country-select';
 import { PublicHeader } from '@/components/public-header';
 import { Alert, Button, Card, Checkbox, Field, Input, LtrInput, Select, Spinner, Textarea } from '@/components/ui';
 import { useRouter } from '@/i18n/navigation';
@@ -97,8 +98,8 @@ function BookingForm() {
             <Field label={t('guests.phone')} htmlFor="b-ph">
               <LtrInput id="b-ph" type="tel" autoComplete="tel" {...form.register('phone')} />
             </Field>
-            <Field label={t('guests.nationality')} htmlFor="b-nat" hint="SA, AE, GB…">
-              <LtrInput id="b-nat" maxLength={2} {...form.register('nationality')} />
+            <Field label={t('guests.nationality')} htmlFor="b-nat">
+              <CountrySelect id="b-nat" value={form.watch('nationality') ?? ''} onChange={(c) => form.setValue('nationality', c)} />
             </Field>
             <Field label={t('public.specialRequests')} htmlFor="b-sr" className="sm:col-span-2">
               <Textarea id="b-sr" {...form.register('specialRequests')} />

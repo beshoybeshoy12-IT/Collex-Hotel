@@ -262,13 +262,17 @@ export class FrontDeskService {
       const rr = await tx.reservationRoom.findFirstOrThrow({ where: { reservationId: reservation.id } });
       const rec = await this.assignments.candidates(ctx, arrival, input.departure, tx);
       const req = await this.assignments.buildRequest(ctx, await this.assignments.loadReservationRoom(ctx, rr.id, tx), { allowUpgrade: false }, tx);
-      const best = rankRooms(rec, req).find((r) => r.eligible);
+      // The receptionist's chosen room is re-validated by assign(); without a choice the best ready room is used.
+      const chosen = input.roomId ? rec.find((r) => r.id === input.roomId) : undefined;
+      if (input.roomId && !chosen) throw notFound('ROOM');
+      const auto = chosen ? undefined : rankRooms(rec, req).find((r) => r.eligible);
+      const pick = chosen ? { roomId: chosen.id, number: chosen.number } : auto ? { roomId: auto.roomId, number: auto.number } : null;
       let assignedRoom: string | null = null;
-      if (best) {
-        await this.assignments.assign(ctx, { reservationRoomId: rr.id, roomId: best.roomId, allowUpgrade: false, source: 'WALK_IN' }, tx);
-        assignedRoom = best.number;
+      if (pick) {
+        await this.assignments.assign(ctx, { reservationRoomId: rr.id, roomId: pick.roomId, allowUpgrade: false, source: 'WALK_IN' }, tx);
+        assignedRoom = pick.number;
       }
-      return { reservationId: reservation.id, confirmationNo: reservation.confirmationNo, reservationRoomId: rr.id, assignedRoom };
+      return { reservationId: reservation.id, confirmationNo: reservation.confirmationNo, reservationRoomId: rr.id, assignedRoom, guestIds: reservation.guestIds };
     });
   }
 

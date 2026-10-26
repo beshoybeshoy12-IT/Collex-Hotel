@@ -191,6 +191,40 @@ describe('Guest stay lifecycle', () => {
     expect(manager).toBeDefined();
   });
 
+  it('walk-in uses the room chosen by reception and registers every adult', async () => {
+    const reception = await staff(env, 'reception');
+    const p = env.data.properties.RUH;
+    const rooms = await reception.get(`/v1/front-desk/walk-in/rooms?categoryId=${p.categories.FAM}&departure=${addDays(env.today, 1)}&adults=2`);
+    expect(rooms.status).toBe(200);
+    const eligible = rooms.body.filter((r: any) => r.eligible);
+    expect(eligible.length).toBeGreaterThan(1);
+    const chosen = eligible[eligible.length - 1]; // deliberately not the top recommendation
+    const res = await reception.post('/v1/front-desk/walk-in', {
+      departure: addDays(env.today, 1),
+      ratePlanId: p.ratePlans.BAR,
+      categoryId: p.categories.FAM,
+      adults: 2,
+      roomId: chosen.roomId,
+      guest: guest({ firstName: 'Karim', lastName: 'Nabil', nationality: 'EG', dateOfBirth: '1990-04-12' }),
+      additionalGuests: [guest({ firstName: 'Salma', lastName: 'Nabil', nationality: 'EG', email: null, isAdult: true })],
+    });
+    expect(res.status).toBe(201);
+    expect(res.body.assignedRoom).toBe(chosen.number);
+    expect(res.body.guestIds).toHaveLength(2);
+
+    // Invalid nationality / passport number formats are rejected (ISO 3166-1, ICAO 9303).
+    const bad = await uploadDocument(reception, res.body.guestIds[0], { issuingCountry: 'XX' });
+    expect(bad.status).toBe(400);
+    const badNo = await uploadDocument(reception, res.body.guestIds[0], { documentNumber: 'TOO-LONG-123' });
+    expect(badNo.status).toBe(400);
+
+    // A booking for 2 adults with only 1 registered guest cannot be checked in.
+    const solo = await reception.post('/v1/reservations', reservationBody(env, { adults: 2, category: 'FAM' }));
+    const detail = (await reception.get(`/v1/reservations/${solo.body.id}`)).body;
+    expect(detail.documentRequirements.guests.filter((g: any) => g.unregistered)).toHaveLength(1);
+    expect(detail.documentRequirements.satisfied).toBe(false);
+  });
+
   it('cancels per policy snapshot and modifies dates with re-pricing', async () => {
     const reception = await staff(env, 'reception');
     const arrival = addDays(env.today, 10);

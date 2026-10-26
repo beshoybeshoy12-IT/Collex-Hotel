@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useId } from 'react';
 import { Checkbox, Field, Input, LtrInput, Select } from './ui';
+import { CountrySelect } from './country-select';
 
 export interface GuestValues {
   firstName: string;
@@ -46,7 +47,7 @@ export function GuestFields({ value, onChange, compact }: { value: GuestValues; 
         <Input id={`${id}-ln`} value={value.lastName} onChange={(e) => set('lastName', e.target.value)} required />
       </Field>
       <Field label={t('guests.nationality')} htmlFor={`${id}-nat`}>
-        <LtrInput id={`${id}-nat`} maxLength={2} value={value.nationality} onChange={(e) => set('nationality', e.target.value.toUpperCase())} />
+        <CountrySelect id={`${id}-nat`} value={value.nationality} onChange={(c) => set('nationality', c)} />
       </Field>
       {!compact && (
         <>
