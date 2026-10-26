@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "فندق كوليكس",
+    "title": "كوليكس",
     "description": "منصة حجز وإدارة الفنادق"
   },
   "common": {
-    "appName": "فندق كوليكس",
+    "appName": "كوليكس",
     "language": "اللغة",
     "switchTo": "English",
     "loading": "جارٍ التحميل…",

@@ -8,7 +8,6 @@ import {
   ClipboardList,
   ConciergeBell,
   FileCheck2,
-  Hotel,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -29,6 +28,7 @@ import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { SessionProvider, useRequiredSession } from '@/lib/session';
 import { LanguageSwitcher } from './language-switcher';
+import { Logo } from './logo';
 import { Alert, Select, Spinner } from './ui';
 
 const NAV: { href: string; key: string; icon: LucideIcon; perm: Permission }[] = [
@@ -82,8 +82,8 @@ function Shell({ children }: { children: ReactNode }) {
   );
   const sidebar = (
     <div className="flex h-full flex-col gap-4 bg-brand-900 p-4 text-white">
-      <Link href="/app" className="flex items-center gap-2 text-lg font-bold">
-        <Hotel className="h-6 w-6" aria-hidden /> {t('common.appName')}
+      <Link href="/app" className="flex items-center">
+        <Logo light className="h-10" />
       </Link>
       {s.me.properties.length > 1 ? (
         <label className="text-xs text-brand-100">
@@ -129,7 +129,7 @@ function Shell({ children }: { children: ReactNode }) {
         <button onClick={() => setOpen(true)} className="rounded p-2 hover:bg-slate-100" aria-label={t('nav.menu')} aria-expanded={open}>
           <Menu className="h-5 w-5" aria-hidden />
         </button>
-        <span className="font-semibold">{t('common.appName')}</span>
+        <Logo className="h-8" />
         <span className="w-9" />
       </div>
       {open && (

@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Collex Hotel",
+    "title": "Collex",
     "description": "Hotel booking and management platform"
   },
   "common": {
-    "appName": "Collex Hotel",
+    "appName": "Collex",
     "language": "Language",
     "switchTo": "العربية",
     "loading": "Loading…",
