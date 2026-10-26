@@ -1,0 +1,6757 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "HealthController_health",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "operationId": "HealthController_ready",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/v1/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 254
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "mfaCode": {
+                    "type": "string",
+                    "pattern": "^\\d{6}$"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/logout-all": {
+      "post": {
+        "operationId": "AuthController_logoutAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/me": {
+      "get": {
+        "operationId": "AuthController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/me/locale": {
+      "put": {
+        "operationId": "AuthController_locale",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "locale": {
+                    "type": "string",
+                    "enum": [
+                      "ar",
+                      "en"
+                    ]
+                  }
+                },
+                "required": [
+                  "locale"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/password-reset/request": {
+      "post": {
+        "operationId": "AuthController_requestReset",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                },
+                "required": [
+                  "email"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/password-reset/confirm": {
+      "post": {
+        "operationId": "AuthController_reset",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "minLength": 20,
+                    "maxLength": 200
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "token",
+                  "password"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/password": {
+      "post": {
+        "operationId": "AuthController_change",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "current": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "next": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "current",
+                  "next"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/mfa/setup": {
+      "post": {
+        "operationId": "AuthController_mfaSetup",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/mfa/enable": {
+      "post": {
+        "operationId": "AuthController_mfaEnable",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "pattern": "^\\d{6}$"
+                  }
+                },
+                "required": [
+                  "code"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/property": {
+      "get": {
+        "operationId": "PropertiesController_get",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      },
+      "patch": {
+        "operationId": "PropertiesController_update",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "nameAr": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "currency": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 3
+                  },
+                  "checkInTime": {
+                    "type": "string",
+                    "pattern": "^\\d{2}:\\d{2}$"
+                  },
+                  "checkOutTime": {
+                    "type": "string",
+                    "pattern": "^\\d{2}:\\d{2}$"
+                  },
+                  "taxPercent": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$"
+                  },
+                  "serviceChargePercent": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$"
+                  },
+                  "overbookingEnabled": {
+                    "type": "boolean"
+                  },
+                  "arabicNumerals": {
+                    "type": "boolean"
+                  },
+                  "descriptionEn": {
+                    "type": "string",
+                    "maxLength": 4000
+                  },
+                  "descriptionAr": {
+                    "type": "string",
+                    "maxLength": 4000
+                  },
+                  "policiesEn": {
+                    "type": "string",
+                    "maxLength": 4000
+                  },
+                  "policiesAr": {
+                    "type": "string",
+                    "maxLength": 4000
+                  },
+                  "phone": {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "address": {
+                    "type": "string",
+                    "maxLength": 200
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/property/check-in-policy": {
+      "get": {
+        "operationId": "PropertiesController_policy",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      },
+      "put": {
+        "operationId": "PropertiesController_updatePolicy",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "documentScope": {
+                    "type": "string",
+                    "enum": [
+                      "NONE",
+                      "PRIMARY_GUEST",
+                      "ALL_ADULTS",
+                      "FOREIGN_ADULTS"
+                    ]
+                  },
+                  "acceptedTypes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "PASSPORT",
+                        "NATIONAL_ID",
+                        "RESIDENCE_PERMIT",
+                        "DRIVING_LICENSE",
+                        "OTHER"
+                      ]
+                    },
+                    "minItems": 1
+                  },
+                  "requireVerification": {
+                    "type": "boolean"
+                  },
+                  "allowExceptions": {
+                    "type": "boolean"
+                  },
+                  "homeCountry": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 2,
+                    "nullable": true
+                  },
+                  "requireDepositBeforeCheckIn": {
+                    "type": "boolean"
+                  },
+                  "requireInspectedRoom": {
+                    "type": "boolean"
+                  },
+                  "documentRetentionDays": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 3650
+                  }
+                },
+                "required": [
+                  "documentScope",
+                  "acceptedTypes",
+                  "requireVerification",
+                  "allowExceptions",
+                  "homeCountry",
+                  "requireDepositBeforeCheckIn",
+                  "requireInspectedRoom",
+                  "documentRetentionDays"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/property/document-types": {
+      "get": {
+        "operationId": "PropertiesController_documentTypes",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/property/buildings": {
+      "get": {
+        "operationId": "PropertiesController_buildings",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      },
+      "post": {
+        "operationId": "PropertiesController_createBuilding",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/property/floors": {
+      "post": {
+        "operationId": "PropertiesController_createFloor",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "buildingId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "level": {
+                    "type": "integer",
+                    "minimum": -10,
+                    "maximum": 300
+                  }
+                },
+                "required": [
+                  "buildingId",
+                  "name",
+                  "level"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/property/floors/{id}/plan": {
+      "get": {
+        "operationId": "PropertiesController_floorPlan",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      },
+      "put": {
+        "operationId": "PropertiesController_saveFloorPlan",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "type": "integer",
+                    "minimum": 200,
+                    "maximum": 5000
+                  },
+                  "height": {
+                    "type": "integer",
+                    "minimum": 200,
+                    "maximum": 5000
+                  },
+                  "rooms": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "roomId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64
+                        },
+                        "x": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 5000
+                        },
+                        "y": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 5000
+                        },
+                        "w": {
+                          "type": "number",
+                          "minimum": 10,
+                          "maximum": 2000
+                        },
+                        "h": {
+                          "type": "number",
+                          "minimum": 10,
+                          "maximum": 2000
+                        },
+                        "rotation": {
+                          "type": "number",
+                          "minimum": -360,
+                          "maximum": 360,
+                          "default": 0
+                        }
+                      },
+                      "required": [
+                        "roomId",
+                        "x",
+                        "y",
+                        "w",
+                        "h"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "maxItems": 1000
+                  }
+                },
+                "required": [
+                  "width",
+                  "height",
+                  "rooms"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/property/categories": {
+      "get": {
+        "operationId": "PropertiesController_categories",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      },
+      "post": {
+        "operationId": "PropertiesController_createCategory",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20,
+                    "pattern": "^[A-Z0-9_-]+$"
+                  },
+                  "nameEn": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "nameAr": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "descriptionEn": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "default": ""
+                  },
+                  "descriptionAr": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "default": ""
+                  },
+                  "maxAdults": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20
+                  },
+                  "maxChildren": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 20
+                  },
+                  "maxOccupancy": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 30
+                  },
+                  "baseOccupancy": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20,
+                    "default": 2
+                  },
+                  "bedConfig": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "default": ""
+                  },
+                  "amenities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 60
+                    },
+                    "maxItems": 50,
+                    "default": []
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uri",
+                      "maxLength": 500
+                    },
+                    "maxItems": 20,
+                    "default": []
+                  },
+                  "sizeSqm": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000
+                  },
+                  "rank": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "default": 0
+                  }
+                },
+                "required": [
+                  "code",
+                  "nameEn",
+                  "nameAr",
+                  "maxAdults",
+                  "maxChildren",
+                  "maxOccupancy"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/property/categories/{id}": {
+      "put": {
+        "operationId": "PropertiesController_updateCategory",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20,
+                    "pattern": "^[A-Z0-9_-]+$"
+                  },
+                  "nameEn": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "nameAr": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "descriptionEn": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "default": ""
+                  },
+                  "descriptionAr": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "default": ""
+                  },
+                  "maxAdults": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20
+                  },
+                  "maxChildren": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 20
+                  },
+                  "maxOccupancy": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 30
+                  },
+                  "baseOccupancy": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20,
+                    "default": 2
+                  },
+                  "bedConfig": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "default": ""
+                  },
+                  "amenities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 60
+                    },
+                    "maxItems": 50,
+                    "default": []
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uri",
+                      "maxLength": 500
+                    },
+                    "maxItems": 20,
+                    "default": []
+                  },
+                  "sizeSqm": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000
+                  },
+                  "rank": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "default": 0
+                  }
+                },
+                "required": [
+                  "code",
+                  "nameEn",
+                  "nameAr",
+                  "maxAdults",
+                  "maxChildren",
+                  "maxOccupancy"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/property/rooms": {
+      "get": {
+        "operationId": "PropertiesController_rooms",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "floorId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      },
+      "post": {
+        "operationId": "PropertiesController_createRoom",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20
+                  },
+                  "floorId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "categoryId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "accessible": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "bedType": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "features": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 40
+                    },
+                    "maxItems": 30,
+                    "default": []
+                  },
+                  "active": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                },
+                "required": [
+                  "number",
+                  "floorId",
+                  "categoryId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/property/rooms/{id}": {
+      "get": {
+        "operationId": "PropertiesController_room",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      },
+      "put": {
+        "operationId": "PropertiesController_updateRoom",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20
+                  },
+                  "floorId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "categoryId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "accessible": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "bedType": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "features": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 40
+                    },
+                    "maxItems": 30,
+                    "default": []
+                  },
+                  "active": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                },
+                "required": [
+                  "number",
+                  "floorId",
+                  "categoryId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/property/rooms/{id}/status": {
+      "patch": {
+        "operationId": "PropertiesController_setStatus",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "housekeepingStatus": {
+                    "type": "string",
+                    "enum": [
+                      "DIRTY",
+                      "CLEANING",
+                      "CLEAN",
+                      "AWAITING_INSPECTION",
+                      "INSPECTED"
+                    ]
+                  },
+                  "doNotDisturb": {
+                    "type": "boolean"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 200
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "property"
+        ]
+      }
+    },
+    "/v1/rates/plans": {
+      "get": {
+        "operationId": "RatesController_plans",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rates"
+        ]
+      },
+      "post": {
+        "operationId": "RatesController_createPlan",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20
+                  },
+                  "nameEn": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "nameAr": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "refundable": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "freeCancellationHours": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 8760,
+                    "default": 24
+                  },
+                  "penaltyNights": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 30,
+                    "default": 1
+                  },
+                  "depositPercent": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$",
+                    "default": "0"
+                  },
+                  "minStay": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 365,
+                    "default": 1
+                  },
+                  "maxStay": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 365,
+                    "default": 30
+                  },
+                  "promoCode": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "discountPercent": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$",
+                    "default": "0"
+                  },
+                  "corporateAccount": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "public": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "active": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                },
+                "required": [
+                  "code",
+                  "nameEn",
+                  "nameAr"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rates"
+        ]
+      }
+    },
+    "/v1/rates/plans/{id}": {
+      "put": {
+        "operationId": "RatesController_updatePlan",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20
+                  },
+                  "nameEn": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "nameAr": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "refundable": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "freeCancellationHours": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 8760,
+                    "default": 24
+                  },
+                  "penaltyNights": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 30,
+                    "default": 1
+                  },
+                  "depositPercent": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$",
+                    "default": "0"
+                  },
+                  "minStay": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 365,
+                    "default": 1
+                  },
+                  "maxStay": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 365,
+                    "default": 30
+                  },
+                  "promoCode": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "discountPercent": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$",
+                    "default": "0"
+                  },
+                  "corporateAccount": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "public": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "active": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                },
+                "required": [
+                  "code",
+                  "nameEn",
+                  "nameAr"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rates"
+        ]
+      }
+    },
+    "/v1/rates/plans/{id}/prices": {
+      "post": {
+        "operationId": "RatesController_addPrice",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "categoryId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "startDate": {
+                    "type": "string"
+                  },
+                  "endDate": {
+                    "type": "string"
+                  },
+                  "weekdays": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 7
+                    },
+                    "maxItems": 7,
+                    "default": []
+                  },
+                  "amount": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$"
+                  },
+                  "extraAdultAmount": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$",
+                    "default": "0"
+                  },
+                  "extraChildAmount": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$",
+                    "default": "0"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000,
+                    "default": 0
+                  }
+                },
+                "required": [
+                  "categoryId",
+                  "startDate",
+                  "endDate",
+                  "amount"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rates"
+        ]
+      }
+    },
+    "/v1/rates/plans/{id}/prices/{priceId}": {
+      "delete": {
+        "operationId": "RatesController_deletePrice",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "priceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rates"
+        ]
+      }
+    },
+    "/v1/rates/restrictions": {
+      "get": {
+        "operationId": "RatesController_restrictions",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rates"
+        ]
+      },
+      "post": {
+        "operationId": "RatesController_addRestriction",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string"
+                  },
+                  "categoryId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "ratePlanId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "closed": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "closedToArrival": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "closedToDeparture": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "minStay": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 365,
+                    "nullable": true,
+                    "default": null
+                  }
+                },
+                "required": [
+                  "date"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rates"
+        ]
+      }
+    },
+    "/v1/rates/restrictions/{id}": {
+      "delete": {
+        "operationId": "RatesController_removeRestriction",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rates"
+        ]
+      }
+    },
+    "/v1/rates/availability": {
+      "get": {
+        "operationId": "RatesController_search",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "arrival",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "departure",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "adults",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 2
+            }
+          },
+          {
+            "name": "children",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20,
+              "default": 0
+            }
+          },
+          {
+            "name": "rooms",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 1
+            }
+          },
+          {
+            "name": "promoCode",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 40
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rates"
+        ]
+      }
+    },
+    "/v1/guests": {
+      "get": {
+        "operationId": "GuestsController_list",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 25
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 40
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "guests"
+        ]
+      },
+      "post": {
+        "operationId": "GuestsController_create",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 254,
+                    "nullable": true
+                  },
+                  "phone": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "nullable": true
+                  },
+                  "nationality": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 2,
+                    "nullable": true
+                  },
+                  "dateOfBirth": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "preferredLocale": {
+                    "type": "string",
+                    "enum": [
+                      "ar",
+                      "en"
+                    ],
+                    "default": "ar"
+                  },
+                  "address": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "nullable": true
+                  },
+                  "vip": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "notes": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "nullable": true
+                  },
+                  "preferences": {
+                    "type": "object",
+                    "properties": {
+                      "accessible": {
+                        "type": "boolean"
+                      },
+                      "bedType": {
+                        "type": "string",
+                        "maxLength": 40
+                      },
+                      "features": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "maxLength": 40
+                        },
+                        "maxItems": 10
+                      }
+                    },
+                    "additionalProperties": false,
+                    "default": {}
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "guests"
+        ]
+      }
+    },
+    "/v1/guests/{id}": {
+      "get": {
+        "operationId": "GuestsController_detail",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "guests"
+        ]
+      },
+      "put": {
+        "operationId": "GuestsController_update",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 254,
+                    "nullable": true
+                  },
+                  "phone": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "nullable": true
+                  },
+                  "nationality": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 2,
+                    "nullable": true
+                  },
+                  "dateOfBirth": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "preferredLocale": {
+                    "type": "string",
+                    "enum": [
+                      "ar",
+                      "en"
+                    ],
+                    "default": "ar"
+                  },
+                  "address": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "nullable": true
+                  },
+                  "vip": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "notes": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "nullable": true
+                  },
+                  "preferences": {
+                    "type": "object",
+                    "properties": {
+                      "accessible": {
+                        "type": "boolean"
+                      },
+                      "bedType": {
+                        "type": "string",
+                        "maxLength": 40
+                      },
+                      "features": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "maxLength": 40
+                        },
+                        "maxItems": 10
+                      }
+                    },
+                    "additionalProperties": false,
+                    "default": {}
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "guests"
+        ]
+      }
+    },
+    "/v1/guests/{id}/legal-hold": {
+      "post": {
+        "operationId": "GuestsController_legalHold",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 200
+                  },
+                  "legalHold": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "reason",
+                  "legalHold"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "guests"
+        ]
+      }
+    },
+    "/v1/guests/{id}/anonymize": {
+      "post": {
+        "operationId": "GuestsController_anonymize",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "guests"
+        ]
+      }
+    },
+    "/v1/guests/{id}/export": {
+      "get": {
+        "operationId": "GuestsController_export",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "guests"
+        ]
+      }
+    },
+    "/v1/documents": {
+      "post": {
+        "operationId": "DocumentsController_upload",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      },
+      "get": {
+        "operationId": "DocumentsController_list",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guestId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/v1/documents/review-queue": {
+      "get": {
+        "operationId": "DocumentsController_queue",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/v1/documents/{id}": {
+      "get": {
+        "operationId": "DocumentsController_get",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      },
+      "patch": {
+        "operationId": "DocumentsController_correct",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "issuingCountry": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 2,
+                    "nullable": true
+                  },
+                  "documentNumber": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "nullable": true
+                  },
+                  "holderName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "nullable": true
+                  },
+                  "issueDate": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "expiryDate": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 3
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      },
+      "delete": {
+        "operationId": "DocumentsController_purge",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/v1/documents/{id}/files/{fileId}": {
+      "get": {
+        "operationId": "DocumentsController_file",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/v1/documents/{id}/files": {
+      "post": {
+        "operationId": "DocumentsController_replace",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/v1/documents/{id}/review": {
+      "post": {
+        "operationId": "DocumentsController_review",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "decision": {
+                        "type": "string",
+                        "enum": [
+                          "VERIFY"
+                        ]
+                      },
+                      "legible": {
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
+                      },
+                      "note": {
+                        "type": "string",
+                        "maxLength": 200
+                      }
+                    },
+                    "required": [
+                      "decision",
+                      "legible"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "decision": {
+                        "type": "string",
+                        "enum": [
+                          "REJECT"
+                        ]
+                      },
+                      "reason": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 3
+                      }
+                    },
+                    "required": [
+                      "decision",
+                      "reason"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "decision": {
+                        "type": "string",
+                        "enum": [
+                          "REQUEST_REUPLOAD"
+                        ]
+                      },
+                      "reason": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 3
+                      }
+                    },
+                    "required": [
+                      "decision",
+                      "reason"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/v1/reservations": {
+      "get": {
+        "operationId": "ReservationsController_list",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 25
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 40
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "INQUIRY",
+                "PENDING",
+                "AWAITING_PAYMENT",
+                "CONFIRMED",
+                "CHECKED_IN",
+                "CHECKED_OUT",
+                "CANCELLED",
+                "NO_SHOW",
+                "EXPIRED"
+              ]
+            }
+          },
+          {
+            "name": "arrivalFrom",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "arrivalTo",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reservations"
+        ]
+      },
+      "post": {
+        "operationId": "ReservationsController_create",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "arrival": {
+                    "type": "string"
+                  },
+                  "departure": {
+                    "type": "string"
+                  },
+                  "ratePlanId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "WEB",
+                      "WALK_IN",
+                      "PHONE",
+                      "EMAIL",
+                      "OTA",
+                      "CORPORATE",
+                      "GROUP"
+                    ],
+                    "default": "PHONE"
+                  },
+                  "rooms": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "categoryId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64
+                        },
+                        "adults": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 20
+                        },
+                        "children": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 20,
+                          "default": 0
+                        }
+                      },
+                      "required": [
+                        "categoryId",
+                        "adults"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1,
+                    "maxItems": 50
+                  },
+                  "primaryGuest": {
+                    "type": "object",
+                    "properties": {
+                      "firstName": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254,
+                        "nullable": true
+                      },
+                      "phone": {
+                        "type": "string",
+                        "maxLength": 40,
+                        "nullable": true
+                      },
+                      "nationality": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 2,
+                        "nullable": true
+                      },
+                      "dateOfBirth": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "preferredLocale": {
+                        "type": "string",
+                        "enum": [
+                          "ar",
+                          "en"
+                        ],
+                        "default": "ar"
+                      },
+                      "address": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "nullable": true
+                      },
+                      "vip": {
+                        "type": "boolean",
+                        "default": false
+                      },
+                      "notes": {
+                        "type": "string",
+                        "maxLength": 4000,
+                        "nullable": true
+                      },
+                      "preferences": {
+                        "type": "object",
+                        "properties": {
+                          "accessible": {
+                            "type": "boolean"
+                          },
+                          "bedType": {
+                            "type": "string",
+                            "maxLength": 40
+                          },
+                          "features": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "maxLength": 40
+                            },
+                            "maxItems": 10
+                          }
+                        },
+                        "additionalProperties": false,
+                        "default": {}
+                      }
+                    },
+                    "required": [
+                      "firstName",
+                      "lastName"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "primaryGuestId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "additionalGuests": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "maxLength": 200,
+                          "minLength": 1
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "maxLength": 200,
+                          "minLength": 1
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email",
+                          "maxLength": 254,
+                          "nullable": true
+                        },
+                        "phone": {
+                          "type": "string",
+                          "maxLength": 40,
+                          "nullable": true
+                        },
+                        "nationality": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 2,
+                          "nullable": true
+                        },
+                        "dateOfBirth": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "preferredLocale": {
+                          "type": "string",
+                          "enum": [
+                            "ar",
+                            "en"
+                          ],
+                          "default": "ar"
+                        },
+                        "address": {
+                          "type": "string",
+                          "maxLength": 200,
+                          "nullable": true
+                        },
+                        "vip": {
+                          "type": "boolean",
+                          "default": false
+                        },
+                        "notes": {
+                          "type": "string",
+                          "maxLength": 4000,
+                          "nullable": true
+                        },
+                        "preferences": {
+                          "type": "object",
+                          "properties": {
+                            "accessible": {
+                              "type": "boolean"
+                            },
+                            "bedType": {
+                              "type": "string",
+                              "maxLength": 40
+                            },
+                            "features": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "maxLength": 40
+                              },
+                              "maxItems": 10
+                            }
+                          },
+                          "additionalProperties": false,
+                          "default": {}
+                        },
+                        "isAdult": {
+                          "type": "boolean",
+                          "default": true
+                        }
+                      },
+                      "required": [
+                        "firstName",
+                        "lastName"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "maxItems": 50,
+                    "default": []
+                  },
+                  "specialRequests": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "default": ""
+                  },
+                  "groupName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "companyName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "promoCode": {
+                    "type": "string",
+                    "maxLength": 40
+                  },
+                  "holdMinutes": {
+                    "type": "integer",
+                    "minimum": 5,
+                    "maximum": 1440
+                  },
+                  "confirm": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                },
+                "required": [
+                  "arrival",
+                  "departure",
+                  "ratePlanId",
+                  "rooms"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reservations"
+        ]
+      }
+    },
+    "/v1/reservations/{id}": {
+      "get": {
+        "operationId": "ReservationsController_detail",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reservations"
+        ]
+      },
+      "patch": {
+        "operationId": "ReservationsController_modify",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "arrival": {
+                    "type": "string"
+                  },
+                  "departure": {
+                    "type": "string"
+                  },
+                  "specialRequests": {
+                    "type": "string",
+                    "maxLength": 4000
+                  },
+                  "groupName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "nullable": true
+                  },
+                  "companyName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "nullable": true
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reservations"
+        ]
+      }
+    },
+    "/v1/reservations/{id}/occupants": {
+      "post": {
+        "operationId": "ReservationsController_addOccupant",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "guestId": {
+                    "type": "string"
+                  },
+                  "guest": {
+                    "type": "object",
+                    "properties": {
+                      "firstName": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254,
+                        "nullable": true
+                      },
+                      "phone": {
+                        "type": "string",
+                        "maxLength": 40,
+                        "nullable": true
+                      },
+                      "nationality": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 2,
+                        "nullable": true
+                      },
+                      "dateOfBirth": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "preferredLocale": {
+                        "type": "string",
+                        "enum": [
+                          "ar",
+                          "en"
+                        ],
+                        "default": "ar"
+                      },
+                      "address": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "nullable": true
+                      },
+                      "vip": {
+                        "type": "boolean",
+                        "default": false
+                      },
+                      "notes": {
+                        "type": "string",
+                        "maxLength": 4000,
+                        "nullable": true
+                      },
+                      "preferences": {
+                        "type": "object",
+                        "properties": {
+                          "accessible": {
+                            "type": "boolean"
+                          },
+                          "bedType": {
+                            "type": "string",
+                            "maxLength": 40
+                          },
+                          "features": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "maxLength": 40
+                            },
+                            "maxItems": 10
+                          }
+                        },
+                        "additionalProperties": false,
+                        "default": {}
+                      }
+                    },
+                    "required": [
+                      "firstName",
+                      "lastName"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "isAdult": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "reservationRoomId": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reservations"
+        ]
+      }
+    },
+    "/v1/reservations/{id}/confirm": {
+      "post": {
+        "operationId": "ReservationsController_confirm",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reservations"
+        ]
+      }
+    },
+    "/v1/reservations/{id}/cancel": {
+      "post": {
+        "operationId": "ReservationsController_cancel",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "waiveFee": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reservations"
+        ]
+      }
+    },
+    "/v1/reservations/{id}/no-show": {
+      "post": {
+        "operationId": "ReservationsController_noShow",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reservations"
+        ]
+      }
+    },
+    "/v1/front-desk/dashboard": {
+      "get": {
+        "operationId": "FrontDeskController_dashboard",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/unassigned": {
+      "get": {
+        "operationId": "FrontDeskController_unassigned",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "days",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/recommendations/{reservationRoomId}": {
+      "get": {
+        "operationId": "FrontDeskController_recommend",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reservationRoomId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "allowUpgrade",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/assign": {
+      "post": {
+        "operationId": "FrontDeskController_assign",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reservationRoomId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "roomId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "allowUpgrade": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "reservationRoomId",
+                  "roomId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/assignments/{id}/unassign": {
+      "post": {
+        "operationId": "FrontDeskController_unassign",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/auto-assign": {
+      "post": {
+        "operationId": "FrontDeskController_autoAssign",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reservationId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "keepTogether": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                },
+                "required": [
+                  "reservationId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/check-in": {
+      "post": {
+        "operationId": "FrontDeskController_checkIn",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reservationRoomId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "roomId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "acknowledgements": {
+                    "type": "object",
+                    "properties": {
+                      "policiesAccepted": {
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
+                      },
+                      "registrationSigned": {
+                        "type": "boolean",
+                        "default": true
+                      }
+                    },
+                    "required": [
+                      "policiesAccepted"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "documentException": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 5
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "keyCardsIssued": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10,
+                    "default": 0
+                  }
+                },
+                "required": [
+                  "reservationRoomId",
+                  "acknowledgements"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/check-out": {
+      "post": {
+        "operationId": "FrontDeskController_checkOut",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stayId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "allowOutstandingBalance": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "stayId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/walk-in": {
+      "post": {
+        "operationId": "FrontDeskController_walkIn",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "departure": {
+                    "type": "string"
+                  },
+                  "ratePlanId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "categoryId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "adults": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20
+                  },
+                  "children": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 20,
+                    "default": 0
+                  },
+                  "guest": {
+                    "type": "object",
+                    "properties": {
+                      "firstName": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254,
+                        "nullable": true
+                      },
+                      "phone": {
+                        "type": "string",
+                        "maxLength": 40,
+                        "nullable": true
+                      },
+                      "nationality": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 2,
+                        "nullable": true
+                      },
+                      "dateOfBirth": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "preferredLocale": {
+                        "type": "string",
+                        "enum": [
+                          "ar",
+                          "en"
+                        ],
+                        "default": "ar"
+                      },
+                      "address": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "nullable": true
+                      },
+                      "vip": {
+                        "type": "boolean",
+                        "default": false
+                      },
+                      "notes": {
+                        "type": "string",
+                        "maxLength": 4000,
+                        "nullable": true
+                      },
+                      "preferences": {
+                        "type": "object",
+                        "properties": {
+                          "accessible": {
+                            "type": "boolean"
+                          },
+                          "bedType": {
+                            "type": "string",
+                            "maxLength": 40
+                          },
+                          "features": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "maxLength": 40
+                            },
+                            "maxItems": 10
+                          }
+                        },
+                        "additionalProperties": false,
+                        "default": {}
+                      }
+                    },
+                    "required": [
+                      "firstName",
+                      "lastName"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "additionalGuests": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "maxLength": 200,
+                          "minLength": 1
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "maxLength": 200,
+                          "minLength": 1
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email",
+                          "maxLength": 254,
+                          "nullable": true
+                        },
+                        "phone": {
+                          "type": "string",
+                          "maxLength": 40,
+                          "nullable": true
+                        },
+                        "nationality": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 2,
+                          "nullable": true
+                        },
+                        "dateOfBirth": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "preferredLocale": {
+                          "type": "string",
+                          "enum": [
+                            "ar",
+                            "en"
+                          ],
+                          "default": "ar"
+                        },
+                        "address": {
+                          "type": "string",
+                          "maxLength": 200,
+                          "nullable": true
+                        },
+                        "vip": {
+                          "type": "boolean",
+                          "default": false
+                        },
+                        "notes": {
+                          "type": "string",
+                          "maxLength": 4000,
+                          "nullable": true
+                        },
+                        "preferences": {
+                          "type": "object",
+                          "properties": {
+                            "accessible": {
+                              "type": "boolean"
+                            },
+                            "bedType": {
+                              "type": "string",
+                              "maxLength": 40
+                            },
+                            "features": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "maxLength": 40
+                              },
+                              "maxItems": 10
+                            }
+                          },
+                          "additionalProperties": false,
+                          "default": {}
+                        },
+                        "isAdult": {
+                          "type": "boolean",
+                          "default": true
+                        }
+                      },
+                      "required": [
+                        "firstName",
+                        "lastName"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "maxItems": 20,
+                    "default": []
+                  },
+                  "specialRequests": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "default": ""
+                  }
+                },
+                "required": [
+                  "departure",
+                  "ratePlanId",
+                  "categoryId",
+                  "adults",
+                  "guest"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/extend": {
+      "post": {
+        "operationId": "FrontDeskController_extend",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reservationId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "newDeparture": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reservationId",
+                  "newDeparture"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/room-move": {
+      "post": {
+        "operationId": "FrontDeskController_move",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stayId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "toRoomId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 3
+                  },
+                  "allowUpgrade": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "stayId",
+                  "toRoomId",
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/night-audit": {
+      "post": {
+        "operationId": "FrontDeskController_nightAudit",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/front-desk/stays/{id}/registration-card": {
+      "get": {
+        "operationId": "FrontDeskController_registration",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "front-desk"
+        ]
+      }
+    },
+    "/v1/housekeeping/tasks": {
+      "get": {
+        "operationId": "OperationsController_tasks",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mine",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      },
+      "post": {
+        "operationId": "OperationsController_createTask",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roomId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "DEPARTURE_CLEAN",
+                      "STAYOVER",
+                      "INSPECTION",
+                      "TOUCH_UP",
+                      "DEEP_CLEAN"
+                    ]
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "LOW",
+                      "NORMAL",
+                      "HIGH",
+                      "URGENT"
+                    ],
+                    "default": "NORMAL"
+                  },
+                  "assignedToId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "dueAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "default": null
+                  },
+                  "notes": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "default": ""
+                  }
+                },
+                "required": [
+                  "roomId",
+                  "type"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      }
+    },
+    "/v1/housekeeping/tasks/{id}": {
+      "patch": {
+        "operationId": "OperationsController_updateTask",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "PENDING",
+                      "IN_PROGRESS",
+                      "DONE",
+                      "INSPECTED",
+                      "CANCELLED"
+                    ]
+                  },
+                  "assignedToId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "LOW",
+                      "NORMAL",
+                      "HIGH",
+                      "URGENT"
+                    ]
+                  },
+                  "checklist": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item": {
+                          "type": "string",
+                          "maxLength": 100
+                        },
+                        "done": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "item",
+                        "done"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "maxItems": 50
+                  },
+                  "notes": {
+                    "type": "string",
+                    "maxLength": 4000
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      }
+    },
+    "/v1/housekeeping/board": {
+      "get": {
+        "operationId": "OperationsController_board",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      }
+    },
+    "/v1/housekeeping/lost-found": {
+      "get": {
+        "operationId": "OperationsController_lostFound",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      },
+      "post": {
+        "operationId": "OperationsController_addLostFound",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roomId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 2
+                  },
+                  "storageLocation": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "default": ""
+                  }
+                },
+                "required": [
+                  "description"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      }
+    },
+    "/v1/housekeeping/lost-found/{id}/close": {
+      "post": {
+        "operationId": "OperationsController_closeLostFound",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "RETURNED",
+                      "DISPOSED"
+                    ]
+                  },
+                  "returnedTo": {
+                    "type": "string",
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "status"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      }
+    },
+    "/v1/maintenance/work-orders": {
+      "get": {
+        "operationId": "OperationsController_workOrders",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      },
+      "post": {
+        "operationId": "OperationsController_createWorkOrder",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roomId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 2
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "default": ""
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "PLUMBING",
+                      "ELECTRICAL",
+                      "HVAC",
+                      "FURNITURE",
+                      "APPLIANCE",
+                      "IT",
+                      "STRUCTURAL",
+                      "OTHER"
+                    ]
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": [
+                      "MINOR",
+                      "MODERATE",
+                      "MAJOR",
+                      "CRITICAL"
+                    ]
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "LOW",
+                      "NORMAL",
+                      "HIGH",
+                      "URGENT"
+                    ],
+                    "default": "NORMAL"
+                  },
+                  "blockType": {
+                    "type": "string",
+                    "enum": [
+                      "NONE",
+                      "OUT_OF_ORDER",
+                      "OUT_OF_SERVICE"
+                    ],
+                    "default": "NONE"
+                  },
+                  "blockFrom": {
+                    "type": "string",
+                    "nullable": true,
+                    "default": null
+                  },
+                  "blockUntil": {
+                    "type": "string",
+                    "nullable": true,
+                    "default": null
+                  },
+                  "assignedToId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "estimatedCost": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$",
+                    "nullable": true,
+                    "default": null
+                  }
+                },
+                "required": [
+                  "title",
+                  "category",
+                  "severity"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      }
+    },
+    "/v1/maintenance/work-orders/{id}": {
+      "patch": {
+        "operationId": "OperationsController_updateWorkOrder",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "OPEN",
+                      "ASSIGNED",
+                      "IN_PROGRESS",
+                      "ON_HOLD",
+                      "RESOLVED",
+                      "CLOSED",
+                      "CANCELLED"
+                    ]
+                  },
+                  "assignedToId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "LOW",
+                      "NORMAL",
+                      "HIGH",
+                      "URGENT"
+                    ]
+                  },
+                  "partsNotes": {
+                    "type": "string",
+                    "maxLength": 4000
+                  },
+                  "estimatedCost": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$",
+                    "nullable": true
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 4000
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      }
+    },
+    "/v1/services/requests": {
+      "get": {
+        "operationId": "OperationsController_requests",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "department",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      },
+      "post": {
+        "operationId": "OperationsController_createRequest",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stayId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "roomId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "ROOM_SERVICE",
+                      "AMENITIES",
+                      "LAUNDRY",
+                      "HOUSEKEEPING",
+                      "MAINTENANCE",
+                      "WAKE_UP_CALL",
+                      "TRANSPORT",
+                      "LUGGAGE",
+                      "COMPLAINT",
+                      "MINIBAR",
+                      "EXTRA_BED",
+                      "OTHER"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "minLength": 2
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "LOW",
+                      "NORMAL",
+                      "HIGH",
+                      "URGENT"
+                    ],
+                    "default": "NORMAL"
+                  },
+                  "department": {
+                    "type": "string",
+                    "enum": [
+                      "FRONT_DESK",
+                      "HOUSEKEEPING",
+                      "MAINTENANCE",
+                      "FOOD_BEVERAGE",
+                      "CONCIERGE"
+                    ],
+                    "default": "FRONT_DESK"
+                  },
+                  "assignedToId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true,
+                    "default": null
+                  },
+                  "chargeAmount": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$",
+                    "nullable": true,
+                    "default": null
+                  }
+                },
+                "required": [
+                  "category",
+                  "description"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      }
+    },
+    "/v1/services/requests/{id}": {
+      "patch": {
+        "operationId": "OperationsController_updateRequest",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "OPEN",
+                      "IN_PROGRESS",
+                      "COMPLETED",
+                      "CANCELLED"
+                    ]
+                  },
+                  "assignedToId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "nullable": true
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "maxLength": 4000
+                  },
+                  "chargeAmount": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$",
+                    "nullable": true
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "operations"
+        ]
+      }
+    },
+    "/v1/finance/reservations/{id}/folios": {
+      "get": {
+        "operationId": "FinanceController_folios",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/v1/finance/folios": {
+      "post": {
+        "operationId": "FinanceController_addFolio",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reservationId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "payer": {
+                    "type": "string",
+                    "enum": [
+                      "GUEST",
+                      "COMPANY"
+                    ],
+                    "default": "GUEST"
+                  },
+                  "payerName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "reservationId",
+                  "payerName"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/v1/finance/folios/{id}/charges": {
+      "post": {
+        "operationId": "FinanceController_charge",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "ROOM",
+                      "TAX",
+                      "SERVICE_CHARGE",
+                      "SERVICE",
+                      "MINIBAR",
+                      "LAUNDRY",
+                      "RESTAURANT",
+                      "DISCOUNT",
+                      "ADJUSTMENT",
+                      "PAYMENT",
+                      "REFUND"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "amount": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$"
+                  },
+                  "idempotencyKey": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "type",
+                  "description",
+                  "amount",
+                  "idempotencyKey"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/v1/finance/entries/{id}/reverse": {
+      "post": {
+        "operationId": "FinanceController_reverse",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 3
+                  },
+                  "idempotencyKey": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "reason",
+                  "idempotencyKey"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/v1/finance/payments": {
+      "post": {
+        "operationId": "FinanceController_pay",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "folioId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "amount": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$"
+                  },
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "CASH",
+                      "CARD",
+                      "BANK_TRANSFER",
+                      "ONLINE",
+                      "CITY_LEDGER"
+                    ]
+                  },
+                  "isDeposit": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "reference": {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "idempotencyKey": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "folioId",
+                  "amount",
+                  "method",
+                  "idempotencyKey"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/v1/finance/refunds": {
+      "post": {
+        "operationId": "FinanceController_refund",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paymentId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "amount": {
+                    "type": "string",
+                    "pattern": "^-?\\d{1,10}(\\.\\d{1,3})?$"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 3
+                  },
+                  "idempotencyKey": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "paymentId",
+                  "amount",
+                  "reason",
+                  "idempotencyKey"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/v1/finance/folios/{id}/invoices": {
+      "post": {
+        "operationId": "FinanceController_invoice",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "INVOICE",
+                      "RECEIPT"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/v1/finance/folios/{id}/print": {
+      "get": {
+        "operationId": "FinanceController_print",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/v1/payments/webhooks/{provider}": {
+      "post": {
+        "operationId": "WebhooksController_webhook",
+        "parameters": [
+          {
+            "name": "provider",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/v1/reports/performance": {
+      "get": {
+        "operationId": "ReportsController_performance",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/v1/reports/bookings": {
+      "get": {
+        "operationId": "ReportsController_bookings",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/v1/reports/operations": {
+      "get": {
+        "operationId": "ReportsController_operations",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/v1/reports/financial": {
+      "get": {
+        "operationId": "ReportsController_financial",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/v1/admin/users": {
+      "get": {
+        "operationId": "AdminController_users",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "admin"
+        ]
+      },
+      "post": {
+        "operationId": "AdminController_createUser",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "fullName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 200
+                  },
+                  "locale": {
+                    "type": "string",
+                    "enum": [
+                      "ar",
+                      "en"
+                    ],
+                    "default": "ar"
+                  },
+                  "roleCode": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "email",
+                  "fullName",
+                  "password",
+                  "roleCode"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/v1/admin/roles": {
+      "get": {
+        "operationId": "AdminController_roles",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/v1/admin/user-roles/{id}/revoke": {
+      "post": {
+        "operationId": "AdminController_revokeRole",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/v1/admin/users/{id}/deactivate": {
+      "post": {
+        "operationId": "AdminController_deactivate",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/v1/admin/audit": {
+      "get": {
+        "operationId": "AdminController_auditLog",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 25
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 40
+            }
+          },
+          {
+            "name": "entityType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 60
+            }
+          },
+          {
+            "name": "action",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 60
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/v1/admin/notifications": {
+      "get": {
+        "operationId": "AdminController_notificationsList",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/v1/admin/notifications/{id}/retry": {
+      "post": {
+        "operationId": "AdminController_retry",
+        "parameters": [
+          {
+            "name": "x-property-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/v1/public/properties": {
+      "get": {
+        "operationId": "PublicController_properties",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/v1/public/properties/{code}": {
+      "get": {
+        "operationId": "PublicController_property",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/v1/public/properties/{code}/availability": {
+      "get": {
+        "operationId": "PublicController_search",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "arrival",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "departure",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "adults",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 2
+            }
+          },
+          {
+            "name": "children",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20,
+              "default": 0
+            }
+          },
+          {
+            "name": "rooms",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 1
+            }
+          },
+          {
+            "name": "promoCode",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 40
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/v1/public/properties/{code}/bookings": {
+      "post": {
+        "operationId": "PublicController_book",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "arrival": {
+                    "type": "string"
+                  },
+                  "departure": {
+                    "type": "string"
+                  },
+                  "ratePlanId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "rooms": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "categoryId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64
+                        },
+                        "adults": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 20
+                        },
+                        "children": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 20,
+                          "default": 0
+                        }
+                      },
+                      "required": [
+                        "categoryId",
+                        "adults"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1,
+                    "maxItems": 10
+                  },
+                  "guest": {
+                    "type": "object",
+                    "properties": {
+                      "firstName": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                      },
+                      "phone": {
+                        "type": "string",
+                        "maxLength": 40,
+                        "nullable": true
+                      },
+                      "nationality": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 2,
+                        "nullable": true
+                      },
+                      "preferredLocale": {
+                        "type": "string",
+                        "enum": [
+                          "ar",
+                          "en"
+                        ],
+                        "default": "ar"
+                      }
+                    },
+                    "required": [
+                      "firstName",
+                      "lastName",
+                      "email"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "specialRequests": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "default": ""
+                  },
+                  "promoCode": {
+                    "type": "string",
+                    "maxLength": 40
+                  },
+                  "acceptPolicies": {
+                    "type": "boolean",
+                    "enum": [
+                      true
+                    ]
+                  }
+                },
+                "required": [
+                  "arrival",
+                  "departure",
+                  "ratePlanId",
+                  "rooms",
+                  "guest",
+                  "acceptPolicies"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/v1/public/guest/lookup": {
+      "post": {
+        "operationId": "PublicController_lookup",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "confirmationNo": {
+                    "type": "string",
+                    "minLength": 4,
+                    "maxLength": 20
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "confirmationNo",
+                  "lastName"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/v1/public/guest/logout": {
+      "post": {
+        "operationId": "PublicController_logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/v1/public/guest/reservation": {
+      "get": {
+        "operationId": "PublicController_myReservation",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      },
+      "patch": {
+        "operationId": "PublicController_updateRequests",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "specialRequests": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "specialRequests"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/v1/public/guest/cancel": {
+      "post": {
+        "operationId": "PublicController_cancel",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/v1/public/guest/documents": {
+      "post": {
+        "operationId": "PublicController_upload",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/v1/public/guest/requests": {
+      "post": {
+        "operationId": "PublicController_request",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "ROOM_SERVICE",
+                      "AMENITIES",
+                      "LAUNDRY",
+                      "HOUSEKEEPING",
+                      "MAINTENANCE",
+                      "WAKE_UP_CALL",
+                      "TRANSPORT",
+                      "LUGGAGE",
+                      "COMPLAINT",
+                      "MINIBAR",
+                      "EXTRA_BED",
+                      "OTHER"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "minLength": 2
+                  }
+                },
+                "required": [
+                  "category",
+                  "description"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/v1/public/guest/dev-simulate-payment": {
+      "post": {
+        "operationId": "PublicController_simulate",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Collex Hotel API",
+    "description": "Hotel management, property management, guest registration, room allocation and booking platform. Staff endpoints use an httpOnly session cookie, the `x-property-id` header and the `x-collex-csrf: 1` header for state-changing requests.",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "cookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "collex_sid"
+      }
+    },
+    "schemas": {}
+  }
+}

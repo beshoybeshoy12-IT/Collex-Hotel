@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-sand-50 text-slate-900 antialiased; }
+  /* Arabic needs a little more line height for diacritics and ligatures. */
+  html[lang='ar'] body { line-height: 1.75; }
+  :focus-visible { outline: 2px solid theme('colors.brand.600'); outline-offset: 2px; }
+  input[type='date'] { min-height: 2.5rem; }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+  @page { margin: 14mm; }
+}
