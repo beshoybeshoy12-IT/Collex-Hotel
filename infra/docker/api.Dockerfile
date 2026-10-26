@@ -16,6 +16,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app /app
 WORKDIR /app/apps/api
+# Writable directory for the local encrypted storage driver (mounted as a volume in compose).
+RUN mkdir -p storage && chown app:app storage
 USER app
 EXPOSE 4000
 # Migrations are applied by a separate release step (see docs/operations.md), not on every container start.

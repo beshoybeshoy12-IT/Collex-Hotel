@@ -15,29 +15,50 @@ services:
   redis:
     image: redis:7-alpine
     ports: ["6380:6379"]
-  api:
+  # Release step: applies pending migrations, then exits. api/worker start only after it succeeds.
+  migrate:
     profiles: ["app"]
     build: { context: ., dockerfile: infra/docker/api.Dockerfile }
+    image: collex-api:local
+    command: ["npx", "prisma", "migrate", "deploy"]
     env_file: .env
-    environment:
+    environment: &appenv
       DATABASE_URL: postgresql://collex:collex_dev_password@postgres:5432/collex
-    depends_on: [postgres]
+      # Local stack only: development mode keeps the mock payment provider and local encrypted storage.
+      # Real deployments use NODE_ENV=production with Stripe, S3 and COOKIE_SECURE=true (docs/operations.md).
+      NODE_ENV: development
+    depends_on:
+      postgres: { condition: service_healthy }
+  api:
+    profiles: ["app"]
+    image: collex-api:local
+    env_file: .env
+    environment: *appenv
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:4000/health/ready || exit 1"]
+      interval: 5s
+      retries: 20
     ports: ["4000:4000"]
     volumes: ["apistorage:/app/apps/api/storage"]
   worker:
     profiles: ["app"]
-    build: { context: ., dockerfile: infra/docker/api.Dockerfile }
+    image: collex-api:local
     command: ["node", "dist/src/worker/main.js"]
     env_file: .env
-    environment:
-      DATABASE_URL: postgresql://collex:collex_dev_password@postgres:5432/collex
-    depends_on: [postgres]
+    environment: *appenv
+    depends_on:
+      migrate: { condition: service_completed_successfully }
   web:
     profiles: ["app"]
-    build: { context: ., dockerfile: infra/docker/web.Dockerfile }
-    environment:
-      API_INTERNAL_URL: http://api:4000
-    depends_on: [api]
+    build:
+      context: .
+      dockerfile: infra/docker/web.Dockerfile
+      args: { API_INTERNAL_URL: "http://api:4000" }
+    image: collex-web:local
+    depends_on:
+      api: { condition: service_healthy }
     ports: ["3000:3000"]
 volumes:
   pgdata:

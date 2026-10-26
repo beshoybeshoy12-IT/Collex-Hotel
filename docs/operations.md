@@ -34,7 +34,7 @@ docker run --rm --env-file .env.production collex-api npx prisma migrate deploy
 4. Put both behind HTTPS (TLS terminated at a load balancer or reverse proxy). Serve only the web origin publicly, and expose the API only to the web server plus the provider webhook path `/v1/payments/webhooks/*`.
 5. Health checks: `GET /health` (liveness), `GET /health/ready` (DB connectivity).
 
-Local all-in-one: `docker compose --profile app up --build` (written but not yet run in the reference environment).
+Local all-in-one (verified 2026-10-27): `docker compose --profile app up -d --build`. A one-shot `migrate` service applies migrations, then `api` (with a `/health/ready` healthcheck), `worker` and `web` start. The local stack runs with `NODE_ENV=development` (mock payments, local encrypted storage volume `apistorage`) and is not a production configuration. Stop dev servers first, because the stack uses ports 3000 and 4000.
 
 Do not run `pnpm db:seed` in production; it refuses when `NODE_ENV=production`. Create the first platform administrator with a one-off script or SQL. Grant roles from Settings → Staff afterwards.
 

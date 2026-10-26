@@ -62,6 +62,16 @@ pnpm dev
 - API: http://localhost:4000, Swagger UI at http://localhost:4000/docs (non-production only)
 - Worker (notifications, hold expiry, document expiry/retention, pre-arrival reminders): run `pnpm worker` in a second terminal
 
+### Run everything in Docker
+
+Stop any `pnpm dev` servers first (ports 3000/4000), then:
+
+```bash
+docker compose --profile app up -d --build
+```
+
+This builds the images, applies migrations (`migrate` service), and starts the API, worker and web app at http://localhost:3000. The database is the same one used by `pnpm dev`, so seed it once with `pnpm db:seed`. Stop the stack with `docker compose --profile app down`.
+
 ### Demo accounts (development seed data only)
 
 All use the password you set in `SEED_DEFAULT_PASSWORD`. Two fictional properties are seeded: **RUH** (Collex Riyadh) and **JED** (Collex Jeddah Corniche).
