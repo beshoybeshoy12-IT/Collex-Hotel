@@ -75,7 +75,7 @@ export class AssignmentsService {
     const req = await this.buildRequest(ctx, rr, { allowUpgrade });
     const rooms = await this.candidates(ctx, req.start, req.end);
     const ranked = rankRooms(rooms, req);
-    const roomInfo = await this.prisma.room.findMany({ where: { propertyId: ctx.propertyId }, select: { id: true, number: true, floor: { select: { name: true } }, category: { select: { code: true, nameEn: true, nameAr: true } }, housekeepingStatus: true, maintenanceStatus: true } });
+    const roomInfo = await this.prisma.room.findMany({ where: { propertyId: ctx.propertyId }, select: { id: true, number: true, floor: { select: { name: true, nameAr: true } }, category: { select: { code: true, nameEn: true, nameAr: true } }, housekeepingStatus: true, maintenanceStatus: true } });
     const info = new Map(roomInfo.map((r) => [r.id, r]));
     return {
       request: req,

@@ -84,8 +84,8 @@ export const roomCategorySchema = z.object({
   rank: z.number().int().min(0).max(100).default(0),
 });
 
-export const buildingSchema = z.object({ name: shortText.min(1) });
-export const floorSchema = z.object({ buildingId: id, name: shortText.min(1), level: z.number().int().min(-10).max(300) });
+export const buildingSchema = z.object({ name: shortText.min(1), nameAr: shortText.default('') });
+export const floorSchema = z.object({ buildingId: id, name: shortText.min(1), nameAr: shortText.default(''), level: z.number().int().min(-10).max(300) });
 
 export const roomSchema = z.object({
   number: z.string().trim().min(1).max(20),

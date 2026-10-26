@@ -124,7 +124,7 @@ export class PropertiesService {
       },
       include: {
         category: { select: { id: true, code: true, nameEn: true, nameAr: true, maxOccupancy: true } },
-        floor: { select: { id: true, name: true, level: true } },
+        floor: { select: { id: true, name: true, nameAr: true, level: true } },
         assignments: {
           where: { status: { in: ['PLANNED', 'ACTIVE'] }, endDate: { gt: new Date(date) } },
           orderBy: { startDate: 'asc' },
@@ -256,7 +256,7 @@ export class PropertiesService {
     const floor = await this.prisma.floor.findFirst({ where: { id: floorId, propertyId: ctx.propertyId }, include: { layout: { include: { rooms: true } } } });
     if (!floor) throw notFound('FLOOR');
     return {
-      floor: { id: floor.id, name: floor.name, level: floor.level },
+      floor: { id: floor.id, name: floor.name, nameAr: floor.nameAr, level: floor.level },
       width: floor.layout?.width ?? 1200,
       height: floor.layout?.height ?? 700,
       rooms: floor.layout?.rooms.map((g) => ({ roomId: g.roomId, x: g.x, y: g.y, w: g.w, h: g.h, rotation: g.rotation })) ?? [],

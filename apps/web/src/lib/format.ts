@@ -12,6 +12,12 @@ export function localeTag(locale: string, arabicDigits: boolean) {
   return locale === 'ar' ? `ar-u-ca-gregory-nu-${arabicDigits ? 'arab' : 'latn'}` : 'en-GB';
 }
 
+/** Picks the Arabic name when the UI is Arabic and one exists (floors, buildings), otherwise the English name. */
+export function useLocalName() {
+  const locale = useLocale();
+  return (x: { name: string; nameAr?: string | null } | null | undefined) => (!x ? '—' : locale === 'ar' && x.nameAr ? x.nameAr : x.name);
+}
+
 export function useFormat() {
   const locale = useLocale();
   const session = useSession();

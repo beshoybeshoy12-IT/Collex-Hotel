@@ -42,7 +42,7 @@ export class OperationsService {
         ...(q.status ? { status: q.status } : { status: { in: ['PENDING', 'IN_PROGRESS', 'DONE'] } }),
         ...(restrictToOwn ? { OR: [{ assignedToId: ctx.userId }, { assignedToId: null }] } : {}),
       },
-      include: { room: { select: { id: true, number: true, housekeepingStatus: true, doNotDisturb: true, floor: { select: { name: true } } } } },
+      include: { room: { select: { id: true, number: true, housekeepingStatus: true, doNotDisturb: true, floor: { select: { name: true, nameAr: true } } } } },
       orderBy: [{ priority: 'desc' }, { createdAt: 'asc' }],
       take: 500,
     });

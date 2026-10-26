@@ -365,7 +365,23 @@
     "height": "Height",
     "rotation": "Rotation",
     "placeRoom": "Place room on map",
-    "history": "Status history"
+    "history": "Status history",
+    "short": {
+      "DIRTY": "Dirty",
+      "CLEANING": "Cleaning",
+      "CLEAN": "Clean",
+      "AWAITING_INSPECTION": "To inspect",
+      "INSPECTED": "Ready",
+      "OCCUPIED": "Occupied",
+      "VACANT": "Vacant",
+      "OPERATIONAL": "Operational",
+      "MAINTENANCE_REQUESTED": "Maintenance requested",
+      "UNDER_MAINTENANCE": "Under repair",
+      "OUT_OF_ORDER": "Out of order",
+      "OUT_OF_SERVICE": "Out of service",
+      "DND": "Do not disturb",
+      "ACCESSIBLE": "Accessible"
+    }
   },
   "housekeeping": {
     "title": "Housekeeping",

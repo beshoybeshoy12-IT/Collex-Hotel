@@ -365,7 +365,23 @@
     "height": "الارتفاع",
     "rotation": "الدوران",
     "placeRoom": "إضافة الغرفة إلى المخطط",
-    "history": "سجل الحالة"
+    "history": "سجل الحالة",
+    "short": {
+      "DIRTY": "تحتاج تنظيف",
+      "CLEANING": "جارٍ التنظيف",
+      "CLEAN": "نظيفة",
+      "AWAITING_INSPECTION": "بانتظار الفحص",
+      "INSPECTED": "جاهزة",
+      "OCCUPIED": "مشغولة",
+      "VACANT": "شاغرة",
+      "OPERATIONAL": "تعمل",
+      "MAINTENANCE_REQUESTED": "طلب صيانة",
+      "UNDER_MAINTENANCE": "قيد الإصلاح",
+      "OUT_OF_ORDER": "معطلة",
+      "OUT_OF_SERVICE": "خارج الخدمة",
+      "DND": "عدم الإزعاج",
+      "ACCESSIBLE": "لذوي الإعاقة"
+    }
   },
   "housekeeping": {
     "title": "التدبير الفندقي",

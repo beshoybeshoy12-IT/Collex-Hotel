@@ -86,10 +86,10 @@ export async function seed(prisma: PrismaClient, password: string): Promise<Seed
       FAM: await prisma.roomCategory.create({ data: { propertyId: property.id, code: 'FAM', nameEn: 'Family Room', nameAr: 'غرفة عائلية', descriptionEn: 'Two queen beds, ideal for families.', descriptionAr: 'سريران كوين، مثالية للعائلات.', maxAdults: 4, maxChildren: 3, maxOccupancy: 5, baseOccupancy: 2, bedConfig: 'TWO_QUEEN', amenities: ['WIFI', 'TV', 'SAFE', 'MINIBAR'], sizeSqm: 42, rank: 2 } }),
       STE: await prisma.roomCategory.create({ data: { propertyId: property.id, code: 'STE', nameEn: 'Executive Suite', nameAr: 'جناح تنفيذي', descriptionEn: 'Separate living room, king bed and panoramic views.', descriptionAr: 'صالة معيشة منفصلة وسرير كينج وإطلالة بانورامية.', maxAdults: 3, maxChildren: 2, maxOccupancy: 4, baseOccupancy: 2, bedConfig: 'KING', amenities: ['WIFI', 'TV', 'SAFE', 'MINIBAR', 'COFFEE', 'BATHTUB', 'LOUNGE_ACCESS'], sizeSqm: 65, rank: 3 } }),
     };
-    const building = await prisma.building.create({ data: { propertyId: property.id, name: 'المبنى الرئيسي / Main' } });
+    const building = await prisma.building.create({ data: { propertyId: property.id, name: 'Main building', nameAr: 'المبنى الرئيسي' } });
     const floorIds: string[] = [];
     for (let f = 1; f <= def.floors; f++) {
-      const floor = await prisma.floor.create({ data: { propertyId: property.id, buildingId: building.id, name: `الطابق ${f} / Floor ${f}`, level: f } });
+      const floor = await prisma.floor.create({ data: { propertyId: property.id, buildingId: building.id, name: `Floor ${f}`, nameAr: `الطابق ${f}`, level: f } });
       floorIds.push(floor.id);
       const layout = await prisma.floorPlanLayout.create({ data: { floorId: floor.id, width: 1200, height: 520 } });
       for (let i = 1; i <= def.perFloor; i++) {

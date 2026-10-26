@@ -25,13 +25,55 @@ export interface RoomInfo {
   accessible: boolean;
 }
 
-/** Visual style per room. Status is conveyed by fill AND a text marker AND stroke pattern (never colour alone). */
-function roomStyle(r: RoomInfo) {
-  if (['OUT_OF_ORDER', 'OUT_OF_SERVICE'].includes(r.maintenanceStatus)) return { fill: '#fee2e2', stroke: '#b91c1c', dash: '6 3', marker: 'OOO' };
-  if (r.occupancy === 'OCCUPIED') return { fill: '#dbeafe', stroke: '#1d4ed8', dash: '', marker: '●' };
-  if (r.housekeepingStatus === 'DIRTY') return { fill: '#fef3c7', stroke: '#b45309', dash: '2 2', marker: '✕' };
-  if (['CLEANING', 'AWAITING_INSPECTION', 'CLEAN'].includes(r.housekeepingStatus)) return { fill: '#ede9fe', stroke: '#6d28d9', dash: '', marker: '◐' };
-  return { fill: '#d1fae5', stroke: '#047857', dash: '', marker: '✓' };
+/**
+ * Each status dimension has its own visual channel, and every state also has a text label (never colour alone):
+ *  - housekeeping → tile fill, border colour and symbol (5 distinct states)
+ *  - occupancy    → text line, plus a solid header bar when occupied
+ *  - maintenance  → red dashed border and red label when not operational
+ */
+export const HK_STYLE: Record<string, { fill: string; stroke: string; marker: string }> = {
+  DIRTY: { fill: '#fef3c7', stroke: '#b45309', marker: '✕' },
+  CLEANING: { fill: '#e0f2fe', stroke: '#0369a1', marker: '◔' },
+  CLEAN: { fill: '#ecfccb', stroke: '#4d7c0f', marker: '◑' },
+  AWAITING_INSPECTION: { fill: '#ede9fe', stroke: '#6d28d9', marker: '◕' },
+  INSPECTED: { fill: '#d1fae5', stroke: '#047857', marker: '✓' },
+};
+const MAINT_STROKE = '#b91c1c';
+const OCCUPIED_COLOR = '#1e3a8a';
+
+function useShortLabels() {
+  const t = useTranslations('rooms.short');
+  return (key: string) => (t.has(key as any) ? t(key as any) : key);
+}
+
+/** Legend generated from the same styles as the tiles. */
+export function FloorPlanLegend() {
+  const short = useShortLabels();
+  const t = useTranslations('rooms');
+  const Item = ({ fill, stroke, dash, label }: { fill: string; stroke: string; dash?: string; label: string }) => (
+    <li className="flex items-center gap-1.5">
+      <svg width="22" height="16" aria-hidden>
+        <rect x="1" y="1" width="20" height="14" rx="3" fill={fill} stroke={stroke} strokeWidth="2" strokeDasharray={dash} />
+      </svg>
+      {label}
+    </li>
+  );
+  return (
+    <div className="space-y-1 text-xs text-slate-700">
+      <p className="font-medium">{t('housekeeping')}</p>
+      <ul className="flex flex-wrap gap-x-4 gap-y-1">
+        {Object.entries(HK_STYLE).map(([k, s]) => (
+          <Item key={k} fill={s.fill} stroke={s.stroke} label={`${s.marker} ${short(k)}`} />
+        ))}
+      </ul>
+      <p className="pt-1 font-medium">{t('occupancy')} · {t('maintenance')}</p>
+      <ul className="flex flex-wrap gap-x-4 gap-y-1">
+        <Item fill={OCCUPIED_COLOR} stroke={OCCUPIED_COLOR} label={`● ${short('OCCUPIED')}`} />
+        <Item fill="#ffffff" stroke="#94a3b8" label={`○ ${short('VACANT')}`} />
+        <Item fill="#ffffff" stroke={MAINT_STROKE} dash="4 2" label={`⚠ ${short('MAINTENANCE_REQUESTED')} / ${short('OUT_OF_ORDER')}`} />
+      </ul>
+    </div>
+  );
 }
 
 export function FloorPlan({
@@ -59,6 +101,7 @@ export function FloorPlan({
   saving?: boolean;
 }) {
   const t = useTranslations('rooms');
+  const short = useShortLabels();
   const svg = useRef<SVGSVGElement>(null);
   const [items, setItems] = useState<PlanRoom[]>(layout);
   const [zoom, setZoom] = useState(1);
@@ -113,8 +156,12 @@ export function FloorPlan({
           {items.map((i) => {
             const r = byId.get(i.roomId);
             if (!r) return null;
-            const st = roomStyle(r);
+            const hk = HK_STYLE[r.housekeepingStatus] ?? HK_STYLE.INSPECTED;
+            const maint = r.maintenanceStatus !== 'OPERATIONAL';
+            const occupied = r.occupancy === 'OCCUPIED';
             const dim = highlight && !highlight.has(i.roomId);
+            const cx = i.x + i.w / 2;
+            const labels = [short(r.housekeepingStatus), short(r.occupancy), maint ? short(r.maintenanceStatus) : null].filter(Boolean).join(', ');
             return (
               <g
                 key={i.roomId}
@@ -123,7 +170,7 @@ export function FloorPlan({
                 className="cursor-pointer"
                 tabIndex={0}
                 role="button"
-                aria-label={`${r.number}`}
+                aria-label={`${r.number}: ${labels}`}
                 aria-pressed={selected === i.roomId}
                 onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onSelect?.(i.roomId)}
                 onPointerDown={(e) => {
@@ -132,14 +179,35 @@ export function FloorPlan({
                   if (editable) drag.current = { kind: 'room', id: i.roomId, startX: e.clientX, startY: e.clientY, orig: { x: i.x, y: i.y } };
                 }}
               >
-                <rect x={i.x} y={i.y} width={i.w} height={i.h} rx={8} fill={st.fill} stroke={selected === i.roomId ? '#0f172a' : st.stroke} strokeWidth={selected === i.roomId ? 4 : 2} strokeDasharray={st.dash} />
-                <text x={i.x + i.w / 2} y={i.y + i.h / 2 - 6} textAnchor="middle" fontSize={22} fontWeight={700} fill="#0f172a">{r.number}</text>
-                <text x={i.x + i.w / 2} y={i.y + i.h / 2 + 20} textAnchor="middle" fontSize={16} fill={st.stroke}>{st.marker}{r.doNotDisturb ? ' DND' : ''}{r.accessible ? ' Ⓐ' : ''}</text>
+                {selected === i.roomId && <rect x={i.x - 6} y={i.y - 6} width={i.w + 12} height={i.h + 12} rx={12} fill="none" stroke="#0f172a" strokeWidth={3} />}
+                <rect x={i.x} y={i.y} width={i.w} height={i.h} rx={8} fill={hk.fill} stroke={maint ? MAINT_STROKE : hk.stroke} strokeWidth={maint ? 4 : 2.5} strokeDasharray={maint ? '8 4' : undefined} />
+                {/* Header bar: occupancy (solid when occupied) */}
+                <rect x={i.x + 4} y={i.y + 4} width={i.w - 8} height={22} rx={5} fill={occupied ? OCCUPIED_COLOR : '#ffffff'} stroke={occupied ? OCCUPIED_COLOR : '#cbd5e1'} />
+                <text x={cx} y={i.y + 19} textAnchor="middle" fontSize={12} fontWeight={600} fill={occupied ? '#ffffff' : '#475569'}>
+                  {occupied ? '● ' : '○ '}
+                  {short(r.occupancy)}
+                </text>
+                <text x={cx} y={i.y + i.h / 2 + 4} textAnchor="middle" fontSize={24} fontWeight={700} fill="#0f172a">{r.number}</text>
+                {/* Housekeeping: symbol + label in the status colour */}
+                <text x={cx} y={i.y + i.h / 2 + 28} textAnchor="middle" fontSize={13} fontWeight={600} fill={hk.stroke}>
+                  {hk.marker} {short(r.housekeepingStatus)}
+                </text>
+                {maint && (
+                  <text x={cx} y={i.y + i.h - 26} textAnchor="middle" fontSize={12} fontWeight={700} fill={MAINT_STROKE}>
+                    ⚠ {short(r.maintenanceStatus)}
+                  </text>
+                )}
+                {(r.doNotDisturb || r.accessible) && (
+                  <text x={cx} y={i.y + i.h - 10} textAnchor="middle" fontSize={11} fill="#334155">
+                    {[r.doNotDisturb ? short('DND') : null, r.accessible ? `Ⓐ ${short('ACCESSIBLE')}` : null].filter(Boolean).join(' · ')}
+                  </text>
+                )}
               </g>
             );
           })}
         </svg>
       </div>
+      <FloorPlanLegend />
       <p className="text-xs text-slate-500">{t('mapHelp')}</p>
       {editable && sel && (
         <div className="grid max-w-xl grid-cols-2 gap-2 sm:grid-cols-4">

@@ -163,6 +163,7 @@ model Building {
   propertyId String
   property   Property @relation(fields: [propertyId], references: [id])
   name       String
+  nameAr     String   @default("")
   floors     Floor[]
 
   @@index([propertyId])
@@ -175,6 +176,7 @@ model Floor {
   buildingId String
   building   Building @relation(fields: [buildingId], references: [id])
   name       String
+  nameAr     String   @default("")
   level      Int
   rooms      Room[]
   layout     FloorPlanLayout?

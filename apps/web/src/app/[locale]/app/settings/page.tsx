@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { DocumentScope } from '@collex/shared';
 import { Alert, Badge, Button, Card, Checkbox, ConfirmButton, Dialog, Field, Input, Ltr, LtrInput, PageHeader, Select, Spinner, StatusBadge, Table, Tabs, Td, Textarea } from '@/components/ui';
-import { useFormat } from '@/lib/format';
+import { useFormat, useLocalName } from '@/lib/format';
 import { useApi, useApiMutation } from '@/lib/hooks';
 import { useRequiredSession } from '@/lib/session';
 
@@ -148,26 +148,31 @@ function RoomsTab() {
   const buildings = useApi<any[]>('/v1/property/buildings');
   const cats = useApi<any[]>('/v1/property/categories');
   const rooms = useApi<any[]>('/v1/property/rooms');
-  const [building, setBuilding] = useState('');
-  const [floor, setFloor] = useState({ buildingId: '', name: '', level: 1 });
+  const ln = useLocalName();
+  const [building, setBuilding] = useState({ name: '', nameAr: '' });
+  const [floor, setFloor] = useState({ buildingId: '', name: '', nameAr: '', level: 1 });
   const empty = { number: '', floorId: '', categoryId: '', accessible: false, bedType: '', features: '', active: true };
   const [edit, setEdit] = useState<null | { id?: string; v: typeof empty }>(null);
-  const addBuilding = useApiMutation(() => ({ path: '/v1/property/buildings', body: { name: building } }), { onSuccess: () => setBuilding('') });
+  const addBuilding = useApiMutation(() => ({ path: '/v1/property/buildings', body: building }), { onSuccess: () => setBuilding({ name: '', nameAr: '' }) });
   const addFloor = useApiMutation(() => ({ path: '/v1/property/floors', body: floor }));
   const save = useApiMutation(() => ({ path: edit!.id ? `/v1/property/rooms/${edit!.id}` : '/v1/property/rooms', method: edit!.id ? 'PUT' : 'POST', body: { ...edit!.v, bedType: edit!.v.bedType || null, features: edit!.v.features.split(',').map((x) => x.trim()).filter(Boolean) } }), { onSuccess: () => setEdit(null) });
   if (buildings.isLoading || rooms.isLoading) return <Spinner />;
-  const floors = buildings.data?.flatMap((b) => b.floors.map((f: any) => ({ ...f, building: b.name }))) ?? [];
+  const floors = buildings.data?.flatMap((b) => b.floors.map((f: any) => ({ ...f, building: ln(b) }))) ?? [];
   const manage = s.can('rooms.manage');
   return (
     <div className="space-y-5">
       {manage && (
         <Card>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            <Field label={t('settings.building')} htmlFor="b-n"><Input id="b-n" value={building} onChange={(e) => setBuilding(e.target.value)} /></Field>
-            <div className="flex items-end"><Button variant="secondary" disabled={!building} onClick={() => addBuilding.mutate()}>{t('settings.addBuilding')}</Button></div>
-            <Field label={t('settings.building')} htmlFor="f-b"><Select id="f-b" value={floor.buildingId} onChange={(e) => setFloor({ ...floor, buildingId: e.target.value })}><option value="">—</option>{buildings.data?.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}</Select></Field>
-            <Field label={t('rooms.floor')} htmlFor="f-n"><Input id="f-n" value={floor.name} onChange={(e) => setFloor({ ...floor, name: e.target.value })} /></Field>
-            <div className="flex items-end gap-2">
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Field label={`${t('settings.building')} — ${t('settings.name')}`} htmlFor="b-n"><Input id="b-n" dir="ltr" value={building.name} onChange={(e) => setBuilding({ ...building, name: e.target.value })} /></Field>
+            <Field label={`${t('settings.building')} — ${t('settings.nameAr')}`} htmlFor="b-na"><Input id="b-na" dir="rtl" value={building.nameAr} onChange={(e) => setBuilding({ ...building, nameAr: e.target.value })} /></Field>
+            <div className="flex items-end"><Button variant="secondary" disabled={!building.name} onClick={() => addBuilding.mutate()}>{t('settings.addBuilding')}</Button></div>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <Field label={t('settings.building')} htmlFor="f-b"><Select id="f-b" value={floor.buildingId} onChange={(e) => setFloor({ ...floor, buildingId: e.target.value })}><option value="">—</option>{buildings.data?.map((b) => <option key={b.id} value={b.id}>{ln(b)}</option>)}</Select></Field>
+            <Field label={`${t('rooms.floor')} — ${t('settings.name')}`} htmlFor="f-n"><Input id="f-n" dir="ltr" value={floor.name} onChange={(e) => setFloor({ ...floor, name: e.target.value })} /></Field>
+            <Field label={`${t('rooms.floor')} — ${t('settings.nameAr')}`} htmlFor="f-na"><Input id="f-na" dir="rtl" value={floor.nameAr} onChange={(e) => setFloor({ ...floor, nameAr: e.target.value })} /></Field>
+            <div className="flex items-end gap-2 lg:col-span-2">
               <Input aria-label={t('settings.level')} type="number" value={floor.level} onChange={(e) => setFloor({ ...floor, level: Number(e.target.value) })} />
               <Button variant="secondary" disabled={!floor.buildingId || !floor.name} onClick={() => addFloor.mutate()}>{t('settings.addFloor')}</Button>
             </div>
@@ -179,7 +184,7 @@ function RoomsTab() {
           {rooms.data?.map((r) => (
             <tr key={r.id}>
               <Td><bdi className="font-semibold">{r.number}</bdi> {r.accessible && <Badge tone="info">{t('rooms.accessible')}</Badge>}</Td>
-              <Td>{r.floor.name}</Td>
+              <Td>{ln(r.floor)}</Td>
               <Td>{locale === 'ar' ? r.category.nameAr : r.category.nameEn}</Td>
               <Td>{r.active ? t('common.yes') : t('common.no')}</Td>
               <Td>{manage && <Button size="sm" variant="ghost" onClick={() => setEdit({ id: r.id, v: { number: r.number, floorId: r.floor.id, categoryId: r.category.id, accessible: r.accessible, bedType: r.bedType ?? '', features: r.features.join(', '), active: r.active } })}>{t('common.edit')}</Button>}</Td>
@@ -191,7 +196,7 @@ function RoomsTab() {
         {edit && (
           <div className="grid gap-3">
             <Field label={t('rooms.number')} htmlFor="r-n"><LtrInput id="r-n" value={edit.v.number} onChange={(e) => setEdit({ ...edit, v: { ...edit.v, number: e.target.value } })} /></Field>
-            <Field label={t('rooms.floor')} htmlFor="r-f"><Select id="r-f" value={edit.v.floorId} onChange={(e) => setEdit({ ...edit, v: { ...edit.v, floorId: e.target.value } })}>{floors.map((f) => <option key={f.id} value={f.id}>{f.building} · {f.name}</option>)}</Select></Field>
+            <Field label={t('rooms.floor')} htmlFor="r-f"><Select id="r-f" value={edit.v.floorId} onChange={(e) => setEdit({ ...edit, v: { ...edit.v, floorId: e.target.value } })}>{floors.map((f) => <option key={f.id} value={f.id}>{f.building} · {ln(f)}</option>)}</Select></Field>
             <Field label={t('rooms.category')} htmlFor="r-c"><Select id="r-c" value={edit.v.categoryId} onChange={(e) => setEdit({ ...edit, v: { ...edit.v, categoryId: e.target.value } })}>{cats.data?.map((c) => <option key={c.id} value={c.id}>{locale === 'ar' ? c.nameAr : c.nameEn}</option>)}</Select></Field>
             <Field label={t('settings.bedType')} htmlFor="r-b"><LtrInput id="r-b" value={edit.v.bedType} onChange={(e) => setEdit({ ...edit, v: { ...edit.v, bedType: e.target.value } })} /></Field>
             <Field label={t('settings.features')} htmlFor="r-ft"><LtrInput id="r-ft" value={edit.v.features} onChange={(e) => setEdit({ ...edit, v: { ...edit.v, features: e.target.value } })} /></Field>

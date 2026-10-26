@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { HousekeepingTaskType, Priority } from '@collex/shared';
 import { Badge, Button, Card, Checkbox, Dialog, EmptyState, Field, Input, PageHeader, Select, Spinner, StatusBadge, Table, Tabs, Td } from '@/components/ui';
-import { useFormat } from '@/lib/format';
+import { useFormat, useLocalName } from '@/lib/format';
 import { useApi, useApiMutation } from '@/lib/hooks';
 import { useRequiredSession } from '@/lib/session';
 
@@ -15,6 +15,7 @@ export default function HousekeepingPage() {
   const t = useTranslations();
   const f = useFormat();
   const s = useRequiredSession();
+  const ln = useLocalName();
   const [tab, setTab] = useState<Tab>('tasks');
   const [mine, setMine] = useState(false);
   const tasks = useApi<any[]>(`/v1/housekeeping/tasks${mine ? '?mine=true' : ''}`, { refetchInterval: 20_000 });
@@ -59,7 +60,7 @@ export default function HousekeepingPage() {
                   <p className="mt-1 flex flex-wrap gap-1 text-xs text-slate-600">
                     <StatusBadge group="housekeeping" value={task.room.housekeepingStatus} />
                     {task.room.doNotDisturb && <Badge tone="warning">{t('rooms.dnd')}</Badge>}
-                    <span>{task.room.floor.name}</span>
+                    <span>{ln(task.room.floor)}</span>
                   </p>
                   <p className="mt-1 text-xs text-slate-600">{t('housekeeping.assignTo')}: {staffName(task.assignedToId)}</p>
                   {supervisor && (
@@ -100,7 +101,7 @@ export default function HousekeepingPage() {
           {board.data?.map((r) => (
             <tr key={r.id}>
               <Td><bdi className="font-semibold">{r.number}</bdi></Td>
-              <Td>{r.floor.name}</Td>
+              <Td>{ln(r.floor)}</Td>
               <Td><StatusBadge group="occupancy" value={r.occupancy} /></Td>
               <Td><StatusBadge group="housekeeping" value={r.housekeepingStatus} /> {r.doNotDisturb && <Badge tone="warning">{t('rooms.dnd')}</Badge>}</Td>
               <Td><StatusBadge group="maintenance" value={r.maintenanceStatus} /></Td>

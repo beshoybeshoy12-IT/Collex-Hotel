@@ -7,7 +7,7 @@ import { HousekeepingStatus, MaintenanceStatus } from '@collex/shared';
 import { FloorPlan } from '@/components/floor-plan';
 import { Badge, Button, Card, Field, Input, Ltr, PageHeader, Select, Spinner, StatusBadge, Table, Tabs, Td } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
-import { useFormat } from '@/lib/format';
+import { useFormat, useLocalName } from '@/lib/format';
 import { useApi, useApiMutation } from '@/lib/hooks';
 import { useRequiredSession } from '@/lib/session';
 
@@ -16,6 +16,7 @@ export default function RoomsPage() {
   const locale = useLocale();
   const f = useFormat();
   const s = useRequiredSession();
+  const ln = useLocalName();
   const [view, setView] = useState<'map' | 'list'>('map');
   const buildings = useApi<any[]>('/v1/property/buildings');
   const floors = useMemo(() => buildings.data?.flatMap((b) => b.floors) ?? [], [buildings.data]);
@@ -49,7 +50,7 @@ export default function RoomsPage() {
       <div className="mb-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
         <Field label={t('rooms.selectFloor')} htmlFor="rm-fl">
           <Select id="rm-fl" value={floorId} onChange={(e) => { setFloorId(e.target.value); setSelected(null); setEdit(false); }}>
-            {floors.map((fl) => <option key={fl.id} value={fl.id}>{fl.name}</option>)}
+            {floors.map((fl) => <option key={fl.id} value={fl.id}>{ln(fl)}</option>)}
           </Select>
         </Field>
         <Field label={t('common.search')} htmlFor="rm-q"><Input id="rm-q" dir="ltr" value={filters.q} onChange={(e) => setFilters({ ...filters, q: e.target.value })} /></Field>
@@ -89,19 +90,12 @@ export default function RoomsPage() {
             ) : (
               <Spinner />
             )}
-            <ul className="mt-3 flex flex-wrap gap-2 text-xs" aria-hidden>
-              <li><Badge tone="success">✓ {t('status.housekeeping.INSPECTED')}</Badge></li>
-              <li><Badge tone="progress">◐ {t('status.housekeeping.CLEAN')} / {t('status.housekeeping.CLEANING')}</Badge></li>
-              <li><Badge tone="warning">✕ {t('status.housekeeping.DIRTY')}</Badge></li>
-              <li><Badge tone="info">● {t('status.occupancy.OCCUPIED')}</Badge></li>
-              <li><Badge tone="danger">OOO {t('status.maintenance.OUT_OF_ORDER')}</Badge></li>
-            </ul>
           </div>
           <div>
             {detail.data ? (
               <Card title={<span>{t('common.room')} <bdi>{detail.data.number}</bdi></span>}>
                 <div className="space-y-3 text-sm">
-                  <p>{locale === 'ar' ? detail.data.category.nameAr : detail.data.category.nameEn} · {detail.data.floor.name}</p>
+                  <p>{locale === 'ar' ? detail.data.category.nameAr : detail.data.category.nameEn} · {ln(detail.data.floor)}</p>
                   <div className="flex flex-wrap gap-1">
                     <StatusBadge group="occupancy" value={detail.data.occupancy} />
                     <StatusBadge group="housekeeping" value={detail.data.housekeepingStatus} />
@@ -144,7 +138,7 @@ export default function RoomsPage() {
           {rooms.data!.filter(matches).map((r) => (
             <tr key={r.id} className="cursor-pointer hover:bg-slate-50" onClick={() => { setSelected(r.id); setFloorId(r.floor.id); setView('map'); }}>
               <Td><button className="font-semibold text-brand-700 hover:underline"><bdi>{r.number}</bdi></button></Td>
-              <Td>{r.floor.name}</Td>
+              <Td>{ln(r.floor)}</Td>
               <Td>{locale === 'ar' ? r.category.nameAr : r.category.nameEn}</Td>
               <Td><StatusBadge group="occupancy" value={r.occupancy} /></Td>
               <Td><StatusBadge group="housekeeping" value={r.housekeepingStatus} /></Td>
